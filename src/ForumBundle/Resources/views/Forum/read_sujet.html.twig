@@ -1,0 +1,134 @@
+{% extends 'front.html.twig' %}
+
+{% block content %}
+
+
+    <div class="container">
+    <div  class="container">
+        <div style="width: 33.65cm" class="row">
+            <div  class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-20">
+                <div class="ui-block responsive-flex">
+                    <div class="ui-block-title">
+                        <div class="h6 title">MySoulMate Forum</div>
+                        <div class="align-right">
+                            <form method="POST" class="w-search">
+                                <div class="form-group with-button">
+                                    <input name="libelle"  id="MarqueId" class="form-control" type="text" placeholder="Search the forums...">
+                                    <button>
+                                        <svg class="olymp-magnifying-glass-icon"><use xlink:href="{{ asset('icons/icons.svg#olymp-magnifying-glass-icon') }}"></use></svg>
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div style="color: #3b5ac5" class="row">
+        <div class="col-xl-9 col-lg-18 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="ui-block">
+                <table style="color: #3b5ac5" class="forums-table">
+
+                    <thead>
+
+                    <tr style="background: rebeccapurple">
+
+                        <th class="forum">
+                            Sujets
+                        </th>
+
+                        <th class="topics">
+                            nombre sujet
+                        </th>
+
+                        <th class="posts">
+                            ID
+                        </th>
+
+                        <th class="freshness">
+                            Date d'ajout    <a href="{{ path('forum_post',{'id':id,'iduser':app.user.id})}}"      >       <img  style="height: 0.5cm;width: 0.5cm;float: right" src="http://www.clker.com/cliparts/u/F/K/J/M/A/add-button-md.png"> </a>
+                        </th>
+
+
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+                    {% for voiture in voitures  %}
+
+
+
+                    <tr>
+                        <td class="forum">
+                            <div  class="forum-item">
+                                  <img style="width: 2cm;height: 2cm" src="{{ asset('imageproduit/' ~ voiture.image) }}" alt="forum">
+
+
+                                <div class="content">
+                                    <a href="{{ path('forum_commentaire',{'id':voiture.id,'iduser':app.user.id}) }}" class="h6 title">{{  voiture.titre }}</a>
+                                    <p class="text">{{  voiture.contenu }}</p>
+                                    {% if app.user.id == voiture.user.id %}
+                                   <a  href="{{ path('forum_delete',{'ids':voiture.id, 'id':id}) }}"> <img  style="height: 0.5cm;width: 0.5cm" src="https://t3.ftcdn.net/jpg/01/45/20/26/500_F_145202679_oT6Hqu8j7PxkTdxIeQ82UuXKs113uuyZ.jpg">
+                                       <a href="{{ path('forum_post_update',{'ids':voiture.id, 'id':id}) }}"> <img style="height: 0.5cm;width: 0.5cm" src="http://www.iconarchive.com/download/i60504/custom-icon-design/pretty-office-9/edit-validated.ico">
+                                       </a>
+                                   </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="topics">
+                            <a href="#" class="h6 count">{{  voiture.commentaires.count }} </a>
+                        </td>
+                        <td class="posts">
+                            <a href="#" class="h6 count">{{  voiture.id}}</a>
+                        </td>
+                        <td class="freshness">
+                            <div class="author-freshness">
+                                <div class="author-thumb">
+                                    <img src="{{ asset('images/') }}{{ voiture.user.image }}" alt="author">
+                                </div>
+                                <a href="#" class="h6 title">{{ voiture.user.username }}</a>
+                                <time class="entry-date updated" datetime="2017-06-24T18:18">{{  voiture.datePublication|date}}</time>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xl- col-lg-3 col-md-12 col-sm-12 col-xs-18">
+            <div class="ui-block">
+                <div class="ui-block-title">
+                    <h6 class="title">Sujets récemments ajouter</h6>
+                </div>
+
+                <div class="ui-block-content">
+                    <ul class="widget w-featured-topics">
+                        {% for modele in recent %}
+                            <li>
+                                <i class="icon fa fa-star" aria-hidden="true"></i>
+                                <div class="content">
+                                    <a href="{{ path('forum_post_read',{'id':modele.id}) }}" class="h6 title"> {{modele.titre}} </a>
+                                    <time class="entry-date updated" datetime="2017-06-24T18:18">{{modele.datePublication|date}}</time>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+
+                    {% endblock %}
+

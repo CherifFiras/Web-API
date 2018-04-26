@@ -1,0 +1,55 @@
+interaction_homepage:
+    path:     /recherche
+    defaults: { _controller: InteractionBundle:Recherche:recherche }
+
+search_result:
+    path:     /getresult
+    defaults: { _controller: InteractionBundle:Recherche:resultat }
+
+message_data:
+    path:     /getmessages
+    defaults: { _controller: InteractionBundle:Message:getMessages }
+
+message_data_all:
+    path:     /getallmessages
+    defaults: { _controller: InteractionBundle:Message:getAllMessages }
+
+send_message:
+    path:     /sendmessage
+    defaults: { _controller: InteractionBundle:Message:sendMessage }
+
+chat:
+    path:     /getmembers
+    defaults: { _controller: InteractionBundle:Message:getChatMemebers }
+
+message_notifications:
+    path:     /getmessagenotifications
+    defaults: { _controller: InteractionBundle:Notification:getMessageNotification }
+
+check_users:
+    path:     /checkusers
+    defaults: { _controller: InteractionBundle:Recherche:check }
+
+demande:
+    path:     /demande
+    defaults: { _controller: InteractionBundle:Communication:demande }
+
+demande_notifications:
+    path:     /getdemandenotifications
+    defaults: { _controller: InteractionBundle:Notification:getDemandes }
+
+accept_demande:
+    path:     /acceptdemande
+    defaults: { _controller: InteractionBundle:Communication:acceptDemande }
+
+reject_demande:
+    path:     /rejectdemande
+    defaults: { _controller: InteractionBundle:Communication:rejectDemande }
+
+make_accepts_seen:
+    path:     /makeacceptsasseen
+    defaults: { _controller: InteractionBundle:Notification:makeAcceptsAsSeen }
+
+connected_user:
+    path:     /user
+    defaults: { _controller: InteractionBundle:Recherche:getUser }

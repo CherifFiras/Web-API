@@ -1,0 +1,120 @@
+{% extends 'front.html.twig' %}
+{% block content %}
+    <div class="main-header">
+        <div class="content-bg-wrap">
+            <div class="content-bg bg-account"></div>
+            <img src="{{ asset('img/The-Top-Design-Events-of-2018-22.jpg') }}" style="width: 100%">
+        </div>
+        <div class="row">
+            <div class="col-lg-8 m-auto col-md-8 col-sm-12 col-xs-12">
+                <div class="main-header-content">
+                    <h1>EVENTS LIST</h1>
+                    <p>Ah there's the signal,now we can attend
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="page-title">
+        <div class="container clearfix">
+            <label class="control-label"  ><input style="background-color: white"  type="text"  id="recherche" placeholder="Search Events..."></label>
+        </div>
+    </section>
+    <div class="container">
+    <div class="row">
+        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12">
+            {% for evenement in evenements %}
+            <div class="ui-block evenements" data-titre="{{ evenement.titre }}">
+                <article class="hentry blog-post blog-post-v3">
+                    <div class="post-thumb">
+                        <img src="{{ asset('public/uploads/brochures/Evenement/' ~  evenement.imageEve) }}" alt="photo">
+                        <a href="#" class="post-category bg-blue-light">{{ evenement.dateEvenement | date }}</a>
+                    </div>
+                    <div class="post-content">
+                        <div class="author-date">
+                            <a class="h6 post__author-name fn" href="#">{{ evenement.titreCordination }}</a>
+                            <div class="post__date">
+                                <time class="published" datetime="2017-03-24T18:18">
+                                    {{ evenement.dateEvenement | date }}
+                                </time>
+                            </div>
+                        </div>
+                        <a href="{{ path('readmoreclient_evenement',{'id': evenement.id }) }}"
+                           class="h3 post-title">{{ evenement.titre |raw }} </a>
+                        <p>{{ evenement.description |raw }}
+                        </p>
+                        {{ facebookButton() }}
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">12</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <aside>
+                <div class="ui-block">
+                    <div class="ui-block-title">
+                        <h6 class="title">Featured Posts</h6>
+                    </div>
+                </div>
+                {% for y in eventplusvu %}
+                <div class="ui-block">
+                    <article class="hentry blog-post blog-post-v3 featured-post-item">
+                        <div class="post-thumb">
+                            <center>  <img style="height: 200px ; width: 200px" src="{{ asset('public/uploads/brochures/Evenement/' ~  y.imageEve) }}" alt="photo"></center>
+                        </div>
+                        <div class="post-content">
+                            <div class="author-date">
+                                <a class="h6 post__author-name fn" href="#">{{ y.titreCordination }}</a>
+                                <div class="post__date">
+                                    <time class="published" datetime="2017-03-24T18:18">
+                                        {{ y.dateEvenement | date }}
+                                    </time>
+                                </div>
+                            </div>
+                            <a href="" class="h4 post-title"><a href="{{ path('readmoreclient_evenement',{'id': y.id }) }}" class="h3 post-title">{{ y.titre }} </a></a>
+                            {{ facebookButton() }}
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </aside>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function(){
+            $("#recherche").keyup(function(){
+                var valeur=$(this).val();
+                $(".evenements").each(function(index, el) {
+                    if(valeur!=""){
+                        if($(this).data("titre").indexOf(valeur)==-1)
+                        {
+                            $(this).hide();
+                        }
+                    }else{
+                        $(".evenements").each(function(index, el) {
+                            $(this).show();
+                        });
+                    }
+                });
+            })
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,47 @@
+profil_homepage:
+    path:     /journal
+    defaults: { _controller: ProfilBundle:Profil:index }
+
+paramInfo:
+    path:     /parametres
+    defaults: { _controller: ProfilBundle:Profil:paramsInfo }
+
+album:
+    path:     /album
+    defaults: { _controller: ProfilBundle:Profil:album }
+
+apropos:
+    path:     /apropos
+    defaults: { _controller: ProfilBundle:Profil:Apropos }
+
+listphoto:
+    path:     /listphoto
+    defaults: { _controller: ProfilBundle:Profil:listPhoto }
+
+centreinteret:
+    path:     /centreinteret
+    defaults: { _controller: ProfilBundle:Profil:centreint }
+
+educationemploi:
+    path:     /educationemploi
+    defaults: { _controller: ProfilBundle:Profil:eduEmp }
+
+updateEmploi:
+    path:     /educationemploi/ue
+    defaults: { _controller: ProfilBundle:Profil:updateEmp }
+
+updateScol:
+    path:     /educationemploi/us
+    defaults: { _controller: ProfilBundle:Profil:updateScol }
+
+autre_profil_homepage:
+    path:     /{id}/journal
+    defaults: { _controller: ProfilBundle:Profil:autreIndex }
+
+autre_profil_apropos:
+    path:     /{id}/apropos
+    defaults: { _controller: ProfilBundle:Profil:autreApropos }
+
+autre_profil_album:
+    path:     /{id}/album
+    defaults: { _controller: ProfilBundle:Profil:autreAlbum }

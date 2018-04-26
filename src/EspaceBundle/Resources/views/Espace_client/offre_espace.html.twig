@@ -1,0 +1,157 @@
+{% extends 'front.html.twig' %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}" />
+
+<div class="container">
+    <div class="row">
+        {% for espace in espaces %}
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                <div class="ui-block">
+
+                    <article class="hentry blog-post">
+
+                        <div class="post-thumb">
+                            <img src="{{  asset('uploads/images/'~ espace.photo~'')}}" alt="" width="300px" height="300px">
+                        </div>
+
+                        <div class="post-content">
+
+                            <div class="h4 post-title"><span>Espace </span>{{ espace.titre }}  </div>
+                                {%  if espace.User == user %}
+
+                                    <a href="#" data-toggle="modal" data-target="#create-photo-album{{ espace.id }}">
+                                        <img src="{{ asset('img/badge6.png') }}" alt="icon" style="float:right;">
+                                    </a>
+                                    <div class="modal fade" id="create-photo-album{{ espace.id }}">
+                                        <div class="modal-dialog ui-block window-popup create-photo-album">
+                                            <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+                                                <svg class="olymp-close-icon"><use xlink:href="icons/icons.svg#olymp-close-icon"></use></svg>
+                                            </a>
+
+                                            <div class="ui-block-title">
+                                                <h6 class="title">Modifier votre espace</h6>
+                                            </div>
+
+                                            <div class="ui-block-content">
+
+                                                <form class="form-group m-form__group row" method="post" style="width:50%;float:right;" action="{{ path('modifier_espaceparclient',{'id_esp':espace.id}) }}">
+                                                    <label class="control-label">Espace de {{ espace.user.nom }} {{ espace.user.prenom }}</label>
+                                                    <div class="col-lg-12 col-md-12">
+                                                        <div class="form-group label-floating is-empty">
+                                                            <input type="text" name="nom" id="nom" value="{{ espace.user.nom }}" hidden>
+                                                            <input type="text" name="prenom" id="prenom" value="{{ espace.user.prenom }}" hidden>
+                                                            Titre d'espace<input type="text" name="titre" id="titre" value="{{ espace.titre }}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-md-12">
+                                                        <div class="form-group label-floating is-empty">
+                                                            Description d'espace<textarea class="form-control" name="description" id="description">{{ espace.description }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-md-12">
+                                                        <div class="form-group label-floating is-empty">
+                                                            <input type="submit" class="btn btn-primary btn-lg btn--half-width" value="Update">
+                                                        </div>
+                                                    </div>
+                                                    </form>
+
+                                                <div class="photo-album-wrapper">
+                                                    <div class="photo-album-item-wrap col-3-width" >
+                                                        <div class="photo-album-item create-album" data-mh="album-item">
+                                                            <img src="{{  asset('uploads/images/'~ espace.photo~'')}}" alt="" width="225px" height="300px">
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                </div>
+
+
+                                                <a href="#" class="btn btn-primary btn-lg btn--half-width" disabled></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                {% endif %}
+
+
+
+                            <div class="author-date">
+                                <a class="h6 post__author-name fn" href="#"> <span>Adresse </span>{{ espace.adresse }}</a><br>
+                                <a class="h6 post__author-name fn" href="#"> <span>Ajouter par </span>{{ espace.user.nom }} {{ espace.user.prenom }}</a>
+
+                            </div>
+
+                            <div class="post-additional-info inline-items">
+
+                                <ul class="friends-harmonic">
+                                    <li>{% set rat=0 %}
+                                        {% set nb=0 %}
+
+                                            {% for ra in rating1 %}
+
+                                               {% if ra.espace.id==espace.id %}
+                                                 {% set rat=rat+ra.rating %}
+                                                 {%  set nb=nb+ra.nbrating %}
+                                               {% endif %}
+                                            {% endfor %}
+                                            {% if rat>0 %}
+                                                {% set x=rat/nb  %}
+                                            {{ x|rating }}
+                                                {% else %}
+                                                {{ rat|rating }}
+{% endif %}
+
+
+
+
+                                    </li>
+                                </ul>
+                                <div class="names-people-likes">
+                                    <a href="#">
+
+                                    </a>
+                                </div>
+
+                                <div class="comments-shared">
+                                    <a href="{{ path('info_espace',{'id':espace.id}) }}" class="post-add-icon inline-items">
+                                       Show more
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </article>
+
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">...</a></li>
+            <li class="page-item"><a class="page-link" href="#">12</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
+{% endblock %}

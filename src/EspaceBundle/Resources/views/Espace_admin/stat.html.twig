@@ -1,0 +1,11 @@
+{% extends 'back.html.twig' %}
+{% block content %}
+    <!--begin::Portlet-->
+    <div id="div_chart"></div>
+
+    <script type="text/javascript" src="{{ asset('https://www.gstatic.com/charts/loader.js') }}"></script>
+    <script type="text/javascript">
+        {{ gc_draw(barchart, 'div_chart') }}
+    </script>
+    <!--end::Portlet-->
+{% endblock %}

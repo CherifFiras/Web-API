@@ -1,0 +1,82 @@
+forum_homepage:
+    path:     /
+    defaults: { _controller: ForumBundle:Default:index }
+
+main_backPage:
+    path:     /back
+    defaults: { _controller: ForumBundle:Default:back }
+
+forum_post:
+    path:     /forum/post/create{id}/{iduser}
+    defaults: { _controller: ForumBundle:Post:create }
+
+forum_delete:
+    path:     /forum/post/delete/{ids}/{id}
+    defaults: { _controller: ForumBundle:Post:delete }
+
+forum_post_update:
+    path:     /forum/update/{ids}/{id}
+    defaults: { _controller: ForumBundle:Post:update }
+
+forum_post_read:
+    path:     /forum/categorie/post/{id}
+    defaults: { _controller: ForumBundle:Post:read }
+
+
+ajax:
+    path:     /forum/categorie/ajax
+    defaults: { _controller: ForumBundle:Categorie:ajax }
+
+#CRUD categorie
+forum:
+    path:     /forum/categorie
+    defaults: { _controller: ForumBundle:Categorie:Forum }
+
+forum_par_ordre_DESC:
+    path:     /forum/categorie/ordre_DESC
+    defaults: { _controller: ForumBundle:Categorie:forum_ordre_DESC }
+
+forum_par_ordre_ASC:
+    path:     /forum/categorie/ordre_ASC
+    defaults: { _controller: ForumBundle:Categorie:forum_ordre_ASC }
+
+forum_par_al:
+    path:     /forum/categorie/ordre_par_al
+    defaults: { _controller: ForumBundle:Categorie:forum_par_al }
+
+
+
+#Crud Commentaire
+
+forum_commentaire:
+    path:     /forum/post/commentaire/{id}/{iduser}
+    defaults: { _controller: ForumBundle:Commentaire:read }
+
+forum_update_commentaire:
+    path:     /forum/post/commentaire/update/{id}/{ids}/{iduser}
+    defaults: { _controller: ForumBundle:Commentaire:update }
+
+forum_delete_commentaire:
+    path:     /forum/post/commentaire/delete/{id}/{ids}/{iduser}
+    defaults: { _controller: ForumBundle:Commentaire:delete }
+
+
+
+#Fonction
+
+
+jaime:
+    path:     /forum/post/categorie/commentaire/jaime/{iduser}/{idsujet}
+    defaults: { _controller: ForumBundle:Commentaire:jaime }
+
+jaimepas:
+    path:     /forum/post/categorie/commentaire/rien/{iduser}/{idsujet}
+    defaults: { _controller: ForumBundle:Commentaire:jaimepas }
+
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+{% extends 'back.html.twig' %}
+
+{% block content %}
+
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Liste des Recherches
+
+                    </h3>
+                </div>
+            </div>
+
+        </div>
+        <div class="m-portlet__body">
+
+            <div style="overflow-y: scroll; height:500px;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID Utilisateur</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Email</th>
+                        <th>Occupation</th>
+                        <th>Pays</th>
+                        <th>Ville</th>
+                        <th>Region</th>
+                        <th>Occupation recherchés</th>
+                        <th>Interet recherchés</th>
+                        <th>Pays recherchés</th>
+                        <th>Age min</th>
+                        <th>Age max</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for re in liste %}
+                        <tr>
+                            <td scope="row">1</td>
+                            <td>{{ re.user.id }}</td>
+                            <td>{{ re.user.nom }} {{ re.user.prenom }}</td>
+                            <td>{{ re.user.email }}</td>
+                            <td>{{ re.user.occupation }}</td>
+                            <td>{{ re.user.pays }}</td>
+                            <td>{{ re.user.ville }}</td>
+                            <td>{{ re.user.region }}</td>
+                            <td>{{ re.occupation }}</td>
+                            <td>{{ re.interet }}</td>
+                            <td>{{ re.pays }}</td>
+                            <td>{{ re.agemin}}</td>
+                            <td>{{ re.agemax }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!--end: Datatable -->
+        </div>
+    </div>
+
+{% endblock %}

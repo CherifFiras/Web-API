@@ -1,0 +1,363 @@
+{% extends 'front.html.twig' %}
+
+{% block css %}
+    <style>
+        hr.style13 {
+            height: 10px;
+            border: 0;
+            box-shadow: 0 10px 10px -10px #8c8b8b inset;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- MODAL AJOUT Scolarite -->
+    <form name="f" id="fs" method="POST">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group" id="modalsc">
+
+                            <div class="form-group label-floating">
+                                <label class="control-label">Nom de l'établissement</label>
+                                <input class="form-control" placeholder="" type="text" name="nometab" value="">
+                            </div>
+
+                            <div class="form-group label-floating is-select">
+                                <label class="control-label">Date de début</label>
+                                <select class="selectpicker form-control" size="auto" name="datedeb" id="dds">
+                                    {% for i in 1960.."now"|date("Y") %}
+                                        <option value={{ i }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group label-floating is-select">
+                                <label class="control-label">Date de fin</label>
+                                <select class="selectpicker form-control" size="auto" name="datefin" id="dfs">
+                                    {% for i in 1960.."now"|date("Y") %}
+                                        <option value={{ i }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="button" id="buts" class="btn btn-primary">Ajouter</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- MODAL AJOUT Emploi -->
+    <form name="fx" id="fe" method="POST">
+        <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+
+                            <div class="form-group label-floating">
+                                <label class="control-label">Nom de l'établissement de l'emploi</label>
+                                <input class="form-control" placeholder="" type="text" name="nomemp" value="">
+                            </div>
+
+                            <div class="form-group label-floating is-select">
+                                <label class="control-label">Date de début</label>
+                                <select class="selectpicker form-control" size="auto" name="datedebe" id="dde">
+                                    {% for i in 1960.."now"|date("Y") %}
+                                        <option value={{ i }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group label-floating is-select">
+                                <label class="control-label">Date de fin</label>
+                                <select class="selectpicker form-control" size="auto" name="datefine" id="dfe">
+                                    {% for i in 1960.."now"|date("Y") %}
+                                        <option value={{ i }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" id="bute" class="btn btn-primary">Ajouter</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Your Account Personal Information -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-xs-12">
+                <div class="ui-block">
+                    <div class="ui-block-title">
+                        <h6 class="title">Votre Education</h6>
+                    </div>
+                    <div class="ui-block-content">
+
+                            <div class="row">
+
+
+                                {% for s in scolarite %}
+                                <form id="scllst{{ s.id }}" name="del" method="POST">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <hr class="style13">
+                                        <div class="row">
+
+                                            <div class="col-lg-10 col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Titre des études</label>
+                                                    <input class="form-control" placeholder="" name="contenu" type="text" value="{{ s.contenu }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+                                                <span class="pull-right button-group">
+                                                    <button type="submit" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-remove"></span> X</button>
+                                                    <input type="hidden" value="{{ s.id }}" name="idscol" id="idscohidden{{ s.id }}">
+                                                </span>
+
+                                                <span class="pull-right button-group">
+                                                    <button id="{{ s.id }}" type="button" class="btn btn-sm btn-primary updatescolc"><span class="glyphicon glyphicon-pencil"></span><img height="7px" width="7px" src="{{ asset('icons/pencil-10.png') }}"></button>
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Date de début</label>
+                                                    <input class="form-control" placeholder="" name="datds" type="text" value="{{ s.dateDebut }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Date de fin</label>
+                                                    <input class="form-control" placeholder="" name="datfs" type="text" value="{{ s.dateFin }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                {% endfor %}
+
+
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <a href="#exampleModal" data-toggle="modal" data-target="#exampleModal" data-whatever="etablissement" class="add-field">
+                                        <svg class="olymp-plus-icon"><use xlink:href={{ asset('icons/icons.svg#olymp-plus-icon') }}></use></svg>
+                                        <span>Ajouter un établissement</span>
+                                    </a>
+                                </div>
+
+                            </div>
+
+                    </div>
+                </div>
+                <!--  Emploi -->
+                <div class="ui-block">
+                    <div class="ui-block-title">
+                        <h6 class="title">Votre Emploi</h6>
+                    </div>
+                    <div class="ui-block-content">
+
+                        <div class="row">
+
+
+                            {% for e in emploi %}
+                                <form id="emplst{{ e.id }}" name="del" method="POST">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <hr class="style13">
+
+                                        <div class="row">
+                                            <div class="col-lg-10 col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Titre de l'emploi</label>
+                                                    <input class="form-control" placeholder="" type="text" name="contenu" value="{{ e.contenu }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+                                                <span class="pull-right button-group">
+                                                    <button type="submit" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-remove"></span> X</button>
+                                                    <input type="hidden" value="{{ e.id }}" name="idemp" id="idemphidden{{ e.id }}" >
+                                                </span>
+
+                                                <span class="pull-right button-group">
+                                                    <button id="{{ e.id }}" type="button" class="btn btn-sm btn-primary updateempc"><span class="glyphicon glyphicon-pencil"></span><img height="7px" width="7px" src="{{ asset('icons/pencil-10.png') }}"></button>
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Date de début</label>
+                                                    <input class="form-control" name="datde" placeholder="" type="text" value="{{ e.dateDebut }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Date de fin</label>
+                                                    <input class="form-control" name="datfe" placeholder="" type="text" value="{{ e.dateFin }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            {% endfor %}
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <a href="#exampleModal1" data-toggle="modal" data-target="#exampleModal1" data-whatever="etablissement d'emploi" class="add-field">
+                                    <svg class="olymp-plus-icon"><use xlink:href={{ asset('icons/icons.svg#olymp-plus-icon') }}></use></svg>
+                                    <span>Ajouter un emploi</span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- FIN EMPLOI-->
+            </div>
+
+            <div class="col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-xs-12 responsive-display-none">
+                <div class="ui-block">
+                    <div class="your-profile">
+                        <div class="ui-block-title ui-block-title-small">
+                            <h6 class="title">Votre Profil</h6>
+                        </div>
+
+                        <div id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingOne">
+                                    <h6 class="mb-0">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Parametres de Profil
+                                            <svg class="olymp-dropdown-arrow-icon"><use xlink:href={{ asset('icons/icons.svg#olymp-dropdown-arrow-icon') }}></use></svg>
+                                        </a>
+                                    </h6>
+                                </div>
+
+                                <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                    <ul class="your-profile-menu">
+                                        <li>
+                                            <a href="{{ path('paramInfo') }}">Informations Personelles</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('album') }}">Gérer Photos</a>
+                                        </li>
+                                        <li>
+                                            <a href="29-YourAccount-AccountSettings.html">Parametres de Compte</a>
+                                        </li>
+                                        <li>
+                                            <a href="30-YourAccount-ChangePassword.html">Modifier le Mot de Passe</a>
+                                        </li>
+                                        <li>
+                                            {% if (app.user.id == iduser) %}
+                                                <a href="{{ path('centreinteret') }}">Loisirs et Centres d'intérêts</a>
+                                            {% else %}
+                                                <a href="{{ path('centreinteret') }}">Loisirs et Centres d'intérêts</a>
+                                            {% endif %}
+                                        </li>
+                                        <li>
+                                            <a href="32-YourAccount-EducationAndEmployement.html">Education et Emploi</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ... end Your Account Personal Information -->
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        //Modal Scolarite
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('whatever')
+            var modal = $(this)
+            modal.find('.modal-title').text('Ajouter ' + recipient)
+            modal.find('input[type=hidden]').val(recipient)
+            //modal.find('.modal-body input').val(recipient)
+        })
+        //Modal Emploi
+        $('#exampleModal1').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('whatever')
+            var modal = $(this)
+            modal.find('.modal-title').text('Ajouter ' + recipient)
+            modal.find('input[type=hidden]').val(recipient)
+            //modal.find('.modal-body input').val(recipient)
+        })
+        //-----------
+        $('#buts').click(function () {
+            if ($('#dfs').val() < $('#dds').val()) {
+                $('#alertd').remove();
+                $('#modalsc').append('<div id="alertd" class="alert alert-danger"><strong>Attention!</strong> Date fin doit etre supérieure a la date début</div>');
+            }
+            else{
+                $('#fs').submit();
+            }
+        });
+        //------------------
+        $('.updateempc').click(function (e) {
+            var idClicked = e.target.id;
+            console.log(idClicked);
+            $('#emplst'+idClicked ).attr("action","{{ path('updateEmploi') }}");
+            $('#emplst'+idClicked ).submit();
+        });
+        //------------------
+        $('.updatescolc').click(function (e) {
+            var idClicked = e.target.id;
+            console.log(idClicked);
+            $('#scllst'+idClicked ).attr("action","{{ path('updateScol') }}");
+            $('#scllst'+idClicked ).submit();
+        });
+    </script>
+
+{% endblock %}
+

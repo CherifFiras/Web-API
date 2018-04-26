@@ -1,0 +1,30 @@
+interaction:
+    resource: "@InteractionBundle/Resources/config/routing.yml"
+    prefix:   /interaction
+
+forum:
+    resource: "@ForumBundle/Resources/config/routing.yml"
+    prefix:   /forum
+
+espace:
+    resource: "@EspaceBundle/Resources/config/routing.yml"
+    prefix:   /espace
+
+profil:
+    resource: "@ProfilBundle/Resources/config/routing.yml"
+    prefix:   /profil
+
+evenement:
+    resource: "@EvenementBundle/Resources/config/routing.yml"
+    prefix:   /evenement
+
+main:
+    resource: "@MainBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

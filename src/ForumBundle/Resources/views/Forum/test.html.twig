@@ -1,0 +1,32 @@
+
+<form>
+    <input name="libelle" id="MarqueId"  type="text" >
+</form>
+
+<table border="3" id="table">
+    <tr style="color: #F5871F"><td>id</td><td>serie</td><td>date</td><td>marque</td></tr>
+
+</table>
+
+<script type="text/javascript" src="{{ asset('js/jquery-3.2.0.min.js') }}"></script>
+<script>
+    $('#MarqueId').keyup(function () {
+        var input=$('#MarqueId').val();
+        console.log(input);
+        $.ajax({
+            url:"{{ path('ajax') }}",
+            type:'Post',
+            data:{'libelle':input},
+            success:function (data) {
+                console.log(data);
+                $.each(data,function (i,e) {
+
+                    $('#table').append("<tr><td>"+e.id+"</td><td>"+e.libelle+"</td><td>"+e.description+"</td><td>"+e.image+"</td></tr>");
+                })
+            }
+        })
+
+
+    });
+
+</script>

@@ -1,0 +1,154 @@
+{% extends 'back.html.twig' %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/semantic.min.css') }}">
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ui statistic">
+                <div class="value">
+                    {{ all }}
+                </div>
+                <div class="label">
+                    Totale des recherches
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ui statistic">
+                <div class="value">
+                    {{ allByYear }}
+                </div>
+                <div class="label">
+                    Cette année
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ui statistic">
+                <div class="value">
+                    {{ allByMonth }}
+                </div>
+                <div class="label">
+                    Ce mois
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ui statistic">
+                <div class="value">
+                    {{ allByToday }}
+                </div>
+                <div class="label">
+                    Ce jour
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="m-portlet">
+            <!--begin::Form-->
+            <form class="m-form" method="get" action="{{ path('statistique_recherche_generale') }}">
+                <div class="m-portlet__body">
+                    <div class="form-group m-form__group row">
+                        <div class="col-lg-6">
+                            <select name="country" class="form-control m-input m-input--square" id="country">
+
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <button type="submit" class="btn btn-metal">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--tab">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon m--hide">
+													<i class="la la-gear"></i>
+												</span>
+                            <h3 class="m-portlet__head-text">
+                                Nombre de requêtes par pays
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div id="country_chart" style="height:500px;"></div>
+                </div>
+            </div>
+            <!--end::Portlet-->
+        </div>
+        <div class="col-lg-6">
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--tab">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon m--hide">
+													<i class="la la-gear"></i>
+												</span>
+                            <h3 class="m-portlet__head-text">
+                                Nombre de requêtes par gouvernorat
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div id="gouvernorat_chart" style="height:500px;"></div>
+                </div>
+            </div>
+            <!--end::Portlet-->
+        </div>
+    </div>
+
+
+    <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('js/semantic.min.js') }}"></script>
+    <script src="{{ asset('js/BattutaApiProfil.js') }}"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('.ui.dropdown').dropdown({
+                onChange:function (x,y,z) {
+                }
+            });
+           $(".m-subheader__title").text("Statistique de recherche - Générale");
+
+            google.charts.load('current', {packages:['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var dataC = google.visualization.arrayToDataTable([
+                    ['Pays', 'Nombre de requêtes'],
+                    {% for s in statByCountry %}
+                    ['{{ s.pays }}',{{ s[1] }}],
+                    {% endfor %}
+                ]);
+
+                var dataG = google.visualization.arrayToDataTable([
+                    ['gouvernorat', 'Nombre de requêtes'],
+                    {% for s in statByTunis %}
+                    ['{{ s.ville }}',{{ s[1] }}],
+                    {% endfor %}
+                ]);
+
+                var countryChart = new google.visualization.ColumnChart(document.getElementById('country_chart'));
+                var gouvernoratChart = new google.visualization.ColumnChart(document.getElementById('gouvernorat_chart'));
+                var options = { legend: { position: 'top' } };
+                countryChart.draw(dataC, options);
+                gouvernoratChart.draw(dataG, options);
+            }
+
+        });
+    </script>
+{% endblock %}

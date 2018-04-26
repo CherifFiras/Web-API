@@ -1,0 +1,56 @@
+{% extends 'back.html.twig' %}
+{% block content %}
+    <section id="page-title">
+        <div class="container clearfix">
+        </div>
+    </section>
+    <section id="content">
+        <div class="content-wrap">
+            <div class="container clearfix">
+                <div id="posts" class="events small-thumbs">
+                        <div class="entry clearfix" style="width: 1000px;height:auto;background: #fff;padding:10px 10px 10px 10px;margin-top:30px;">
+                            <div class="entry-image">
+                                <a href="#">
+                                    <img src="{{ asset('public/uploads/brochures/Evenement/' ~  evenement.imageEve) }}" height="200px" width="200px" >
+                                </a>
+                            </div>
+                            <div class="entry-c">
+                                <div class="entry-title">
+                                    <h2><a href="#">{{ evenement.titre  }}</a></h2>
+                                </div>
+                                <ul class="entry-meta clearfix">
+                                    <li><a href="#"><i class="icon-time"></i> {{ evenement.dateEvenement | date }}</a></li>
+                                    <li><a href="#"><i class="icon-map-marker2"></i>{{ evenement.titreCordination }}</a></li>
+                                    <li><a href="#"><i class="icon-map-marker2"></i>{{ evenement.nbplaces }}</a></li>
+                                </ul>
+                                <div class="entry-content">
+                                    <p>{{ evenement.description |raw }}</p>
+                                </div>
+                            </div>
+                            <div class="comment-content clearfix">
+
+                                <table>
+
+                                    {% for x in avis %}
+
+                                        <tr>
+                                        <td>  {{  x.contenu}}  </td>
+                                        <td>
+                                            {% for i in 1.. x.valeur %}
+                                                <span class="fa fa-star checked"></span>
+                                            {% endfor %}
+                                        </td>
+                                        <td>{{  x.dateAvis | date}}</td>
+                                            <td><a href="{{ path('delete_avisadmin',{'id': x.id,'ide' :evenement.id }) }}" class="btn btn-danger">Supprimer</a></td>
+
+                                    {% endfor %}
+                                </table>
+
+                                <a class='comment-reply-link' href='#'><i class="icon-reply"></i></a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

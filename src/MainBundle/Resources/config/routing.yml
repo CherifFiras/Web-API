@@ -1,0 +1,139 @@
+main_homepage:
+    path:     /
+    defaults: { _controller: ProfilBundle:Profil:index }
+
+loginadmin:
+    path:     /loginadmin
+    defaults: { _controller: MainBundle:AdminSecurity:login }
+
+admin:
+    path:     /admin
+    defaults: { _controller: MainBundle:AdminSecurity:admin }
+
+indexAdmin:
+    path:     /admin/profiladmin
+    defaults: { _controller: MainBundle:ProfilAdmin:index }
+
+usersAdmin:
+    path:     /admin/profiladmin/users
+    defaults: { _controller: MainBundle:ProfilAdmin:utilisateurs }
+
+statAdmin:
+    path:     /admin/profiladmin/statistiques
+    defaults: { _controller: MainBundle:ProfilAdmin:statProfil }
+
+signalAdmin:
+    path:     /admin/profiladmin/signaled
+    defaults: { _controller: MainBundle:ProfilAdmin:utilisateurSignal }
+
+statistique_recherche_generale:
+    path:     /admin/recherchestatg
+    defaults: { _controller: MainBundle:StatistiqueRecherche:generale }
+
+statistique_recherche_liste:
+    path:     /admin/listerecherche
+    defaults: { _controller: MainBundle:StatistiqueRecherche:rechercheList }
+
+#KARIM
+
+stat:
+    path:     /admin/categorie/stat
+    defaults: { _controller: ForumBundle:Admin:stat }
+
+Admin_categorie_create:
+    path:     /admin/categorie/create
+    defaults: { _controller: ForumBundle:Admin:create }
+
+Admin_categorie_delete:
+    path:     /admin/categorie/delete/{id}
+    defaults: { _controller: ForumBundle:Admin:delete }
+
+Admin_categorie_update:
+    path:     /admin/categorie/update/{id}
+    defaults: { _controller: ForumBundle:Admin:update }
+
+forum_admin:
+    path:     /admin/categorie
+    defaults: { _controller: ForumBundle:Admin:Forum }
+
+Admin_post_read:
+    path:     /admin/categorie/post/{id}
+    defaults: { _controller: ForumBundle:Admin:read_post }
+
+Admin_post_delete:
+    path:     /admin/categorie/post/delete/{ids}/{id}
+    defaults: { _controller: ForumBundle:Admin:delete_post }
+
+#############################################################
+################rami
+state:
+    path:     /admin/evenement/stat
+    defaults: { _controller: EvenementBundle:Admin:stat }
+
+create_evenement:
+    path:     /admin/evenement/create
+    defaults: { _controller: EvenementBundle:Admin:AjouterE }
+
+read_evenement:
+    path:     /admin/evenement/read
+    defaults: { _controller: EvenementBundle:Admin:ReadAdmin }
+
+readmore_evenement:
+    path:     /admin/evenement/readmore{id}
+    defaults: { _controller: EvenementBundle:Admin:ReadMoreE }
+
+update_evenement:
+    path:     /admin/evenement/update{id}
+    defaults: { _controller: EvenementBundle:Admin:UpdateE }
+
+delete_evenement:
+    path:     /admin/evenement/delete{id}
+    defaults: { _controller: EvenementBundle:Admin:DeleteE }
+
+read_avis:
+    path:     /admin/evenement/readavis{id}
+    defaults: { _controller: EvenementBundle:Admin:ReadAvis }
+
+delete_avisadmin:
+    path:     /admin/evenement/deleteavisadmin/{id}/{ide}
+    defaults: { _controller: EvenementBundle:Admin:DeleteAvisAdmin }
+
+#####################################################################
+afficher_espace:
+    path:     /admin/espace/afficher
+    defaults: { _controller: EspaceBundle:Espace:read }
+
+recherche_espace:
+    path:     /admin/espace/afficher
+    defaults: { _controller: EspaceBundle:Espace:Recherche }
+
+espace_confirmer:
+    path:     /admin/espace/espace_confirmer
+    defaults: { _controller: EspaceBundle:Espace:read_confirmer }
+
+confirmation_espace:
+      path:     /admin/espace/confirmation{id}
+      defaults: { _controller: EspaceBundle:Espace:confirmer }
+
+espace_modifier_client:
+    path:  /admin/espace/espaces_modifier
+    defaults: { _controller: EspaceBundle:Espace:read_modifier}
+
+confirmation_espace_modifier:
+    path:  /admin/espace_confirme/espace/{id}
+    defaults: { _controller: EspaceBundle:Espace:confirmer_modification}
+
+pie:
+   path: /admin/espace/pie
+   defaults: { _controller: EspaceBundle:Espace:stat}
+
+supprimer_espace:
+    path:     /admin/delete{id}
+    defaults: { _controller: EspaceBundle:Espace:delete }
+
+supprimer_conf:
+    path:     /admin/delete{id}
+    defaults: { _controller: EspaceBundle:Espace:deleteconf }
+modifier_espace:
+    path:     /admin/update{id}
+    defaults: { _controller: EspaceBundle:Espace:update }

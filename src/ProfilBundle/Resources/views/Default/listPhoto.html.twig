@@ -1,0 +1,185 @@
+{% extends 'front.html.twig' %}
+
+{% block content %}
+    <!-- Top Header -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="ui-block">
+                    <div class="top-header">
+                        <div class="top-header-thumb">
+                            <img src={{ asset('img/top-header1.jpg') }} alt="nature">
+                        </div>
+                        <div class="profile-section">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 ">
+                                    <ul class="profile-menu">
+                                        <li>
+                                            <a href="02-ProfilePage.html">Journal</a>
+                                        </li>
+                                        <li>
+                                            <a href="05-ProfilePage-About.html">À propos</a>
+                                        </li>
+                                        <li>
+                                            <a href="06-ProfilePage.html">Friends</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-5 ml-auto col-md-5">
+                                    <ul class="profile-menu">
+                                        <li>
+                                            <a href="07-ProfilePage-Photos.html" class="active">Album Photo</a>
+                                        </li>
+                                        <li>
+                                            <a href="09-ProfilePage-Videos.html">Videos</a>
+                                        </li>
+                                        <li>
+                                            <div class="more">
+                                                <svg class="olymp-three-dots-icon"><use xlink:href={{ asset('icons/icons.svg#olymp-three-dots-icon') }}></use></svg>
+                                                <ul class="more-dropdown more-with-triangle">
+                                                    <li>
+                                                        <a href="#">Report Profile</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Block Profile</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="control-block-button">
+                                <a href="35-YourAccount-FriendsRequests.html" class="btn btn-control bg-blue">
+                                    <svg class="olymp-happy-face-icon"><use xlink:href={{ asset('icons/icons.svg#olymp-happy-face-icon') }}></use></svg>
+                                </a>
+
+                                <a href="#" class="btn btn-control bg-purple">
+                                    <svg class="olymp-chat---messages-icon"><use xlink:href={{ asset('icons/icons.svg#olymp-chat---messages-icon') }}></use></svg>
+                                </a>
+
+                                <div class="btn btn-control bg-primary more">
+                                    <svg class="olymp-settings-icon"><use xlink:href={{ asset('icons/icons.svg#olymp-settings-icon') }}></use></svg>
+
+                                    <ul class="more-dropdown more-with-triangle triangle-bottom-right">
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#update-header-photo">Update Profile Photo</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#update-header-photo">Update Header Photo</a>
+                                        </li>
+                                        <li>
+                                            <a href="29-YourAccount-AccountSettings.html">Account Settings</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="top-header-author">
+                            <a href="02-ProfilePage.html" class="author-thumb">
+                                <img src={{ asset('img/author-main1.jpg') }} alt="author">
+                            </a>
+                            <div class="author-content">
+                                <a href="02-ProfilePage.html" class="h4 author-name">James Spiegel</a>
+                                <div class="country">San Francisco, CA</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ... end Top Header -->
+
+    <!-- Partie des photos !!!!!!! -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="ui-block responsive-flex">
+                    <div class="ui-block-title">
+                        <div class="h6 title">Visualiser l'album XXXXX</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- Tab panes -->
+                <div class="tab-content">
+
+                    <div class="tab-pane active" id="photo-page" role="tabpanel">
+
+                        <div class="photo-album-wrapper">
+
+                            <div class="photo-item half-width">
+                                <img src={{ asset("img/photo-item1.jpg") }} alt="photo">
+                                <div class="overlay overlay-dark"></div>
+
+                                <a href="#" data-toggle="modal" data-target="#open-photo-popup-v1" class="  full-block"></a>
+                                <div class="content">
+
+                                    <time class="published" datetime="2017-03-24T18:18">1 week ago</time>
+                                </div>
+                            </div>
+
+                            <div class="photo-item col-4-width">
+                                <img src={{ asset("img/photo-item2.jpg") }} alt="photo">
+                                <div class="overlay overlay-dark"></div>
+
+                                <a href="#" data-toggle="modal" data-target="#open-photo-popup-v2" class="  full-block"></a>
+                                <div class="content">
+                                    <time class="published" datetime="2017-03-24T18:18">1 week ago</time>
+                                </div>
+                            </div>
+
+                            <div class="photo-item col-4-width">
+                                <img src={{ asset("img/photo-item3.jpg") }} alt="photo">
+                                <div class="overlay overlay-dark"></div>
+
+                                <a href="#" data-toggle="modal" data-target="#open-photo-popup-v2" class="  full-block"></a>
+                                <div class="content">
+
+                                    <time class="published" datetime="2017-03-24T18:18">1 week ago</time>
+                                </div>
+                            </div>
+
+                            <div class="photo-item col-4-width">
+                                <img src={{ asset("img/photo-item4.jpg") }} alt="photo">
+                                <div class="overlay overlay-dark"></div>
+
+                                <a href="#" data-toggle="modal" data-target="#open-photo-popup-v2" class="  full-block"></a>
+                                <div class="content">
+
+                                    <time class="published" datetime="2017-03-24T18:18">1 week ago</time>
+                                </div>
+                            </div>
+
+                            <div class="photo-item col-4-width">
+                                <img src={{ asset("img/photo-item5.jpg") }} alt="photo">
+                                <div class="overlay overlay-dark"></div>
+
+                                <a href="#" data-toggle="modal" data-target="#open-photo-popup-v2" class="  full-block"></a>
+                                <div class="content">
+
+                                    <time class="published" datetime="2017-03-24T18:18">1 week ago</time>
+                                </div>
+                            </div>
+
+                            <a href="#" class="btn btn-control btn-more"><svg class="olymp-three-dots-icon"><use xlink:href={{ asset("icons/icons.svg#olymp-three-dots-icon") }}></use></svg></a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+
+
+{% endblock %}
+

@@ -1,0 +1,85 @@
+{% extends 'back.html.twig' %}
+{% block content %}
+    {{ form_start(form) }}
+    <section id="page-title">
+        <div class="m-portlet">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+										<span class="m-portlet__head-icon m--hide">
+											<i class="la la-gear"></i>
+										</span>
+                        <h3 class="m-portlet__head-text">
+                            Create a new event
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <div class="m-form__section m-form__section--first">
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Title:
+                        </label>
+                        <div class="col-lg-4">
+                            {{ form_widget(form.titre) }}
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Photo:
+                        </label>
+                        <div class="form-group label-floating">
+                            {{ form_widget(form.imageEve) }}
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Country
+                        </label>
+                        <div class="form-group label-floating is-select">
+                            {{ form_widget(form.titreCordination, { 'attr': {'class': 'btn btn-primary btn-lg full-width'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Nombre de places:
+                        </label>
+                        <div class="col-lg-4">
+                            {{ form_widget(form.nbplaces) }}
+                        </div>
+                    </div>
+                    <div class="m-form__group form-group row">
+                        <label class="col-lg-2 col-form-label">
+                            Description:
+                        </label>
+                        <div class="form-group label-floating">
+                            {{ form_widget(form.description) }}
+                        </div>
+                    </div>
+                    <div class="m-form__seperator m-form__seperator--dashed  m-form__seperator--space m--margin-bottom-40"></div>
+                    <div id="m_repeater_1">
+                        <div class="form-group  m-form__group row" id="m_repeater_1">
+                            <label class="col-lg-2 col-form-label">
+                                Date:
+                            </label>
+                            <div class="form-group date-time-picker label-floating">
+                                {{ form_widget(form.dateEvenement) }}
+                            </div>
+                        </div>
+                        <div class="m-portlet__foot m-portlet__foot--fit">
+                            <div class="m-form__actions m-form__actions">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                                        {{ form_widget(form.AjouterEvennement, { 'attr': {'class': 'btn btn-primary btn-lg full-width'} }) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

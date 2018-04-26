@@ -1,0 +1,156 @@
+{% extends 'front.html.twig' %}
+{% block content %}
+    <div class="container">
+        <div class="row m-t-50">
+            <div class="col-xl-8 m-auto col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="ui-block">
+                    <article class="hentry blog-post single-post single-post-v2">
+                        <a href="#" class="post-category bg-transparent">EVENT</a>
+                        <h1 class="post-title">{{ evenement.titre }}</h1>
+                        <div class="single-post-additional inline-items">
+                            <div class="post__author author vcard inline-items">
+                                <div class="author-date not-uppercase">
+                                    <a class="h6 post__author-name fn" href="#">{{ evenement.dateEvenement | date }}</a>
+                                    <div class="author_prof">
+                                        Date
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-date-wrap inline-items">
+                                <svg class="olymp-calendar-icon"></svg>
+                                <div class="post-date">
+                                    <a class="h6 date" href="#">{{ evenement.vue }}</a>
+                                    <span>Views</span>
+                                </div>
+                            </div>
+                            <div class="post-comments-wrap inline-items">
+                                <svg class="olymp-comments-post-icon"></svg>
+                                <div class="post-comments">
+                                    <a class="h6 comments" href="#">{{ evenement.titreCordination }}</a>
+                                    <span>Space</span>
+                                </div>
+                            </div>
+                            <div class="post-date-wrap inline-items">
+                                <svg class="olymp-calendar-icon"></svg>
+                                <div class="post-comments">
+                                    {{ evenement.nbplaces }}
+                                    {% if(evenement.nbplaces>0) %}
+                                        <span>Number of Places</span>
+                                        <br>
+                                        <a class="btn btn-danger"  href="{{ path('participation',{'id':evenement.id}) }}">participer</a>
+                                    {% else %}
+                                        sorry, there is no more places
+
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-thumb">
+                            <img src="{{ asset('public/uploads/brochures/Evenement/' ~  evenement.imageEve) }}" alt="author">
+                        </div>
+                        <div class="post-content-wrap">
+                            <div class="post-content">
+                                <h5>{{ evenement.description |raw }}</h5>
+                            </div>
+                        </div>
+
+                    </article>
+                    <script src="{{ asset('js/countdown.js') }}"></script>
+                    <center>
+                        <script>
+
+                            function doneHandler(result) {
+
+                                // Result is a javascript Date object, containing the deadline time.
+                                //
+                                // 		NOTES on the javascript Date object:
+                                // 			- months are 0-11, not 1-12
+                                // 			- "day" is day of the week (0-6) representing sunday-saturday
+                                // 			- "date" is the day of the month (0-31)
+
+                                var year = result.getFullYear();
+                                var month = result.getMonth() + 1; // bump by 1 for humans
+                                var day = result.getDate();
+                                var h = result.getHours();
+                                var m = result.getMinutes();
+                                var s = result.getSeconds();
+
+                                var UTC = result.toString();
+
+                                var output = UTC + "\n";
+                                output += "year: " + year + "\n";
+                                output += "month: " + month + "\n";
+                                output += "day: " + day + "\n";
+                                output += "h: " + h + "\n";
+                                output += "m: " + m + "\n";
+                                output += "s: " + s + "\n";
+
+                                alert(output);
+                            }
+
+                            var myCountdownTest = new Countdown({
+                                year: {{ evenement.dateEvenement | date("Y") }},
+                                month	: {{ evenement.dateEvenement | date("m") }},
+                                day		: {{ evenement.dateEvenement | date("d") }},
+                                width	: 300,
+                                height	: 50,
+                                onComplete : doneHandler
+                            });
+
+                        </script>
+                    </center>
+                    <ul class="comments-list">
+                        <li>
+                            {% for x in Avis_evenements %}
+                                <tr>
+                                <div class="post__author author vcard inline-items">
+                                    <img src="{{ x.user.image }}" alt="author">
+                                    <div class="author-date">
+                                        <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{ x.user.username }}</a>
+                                        <div class="post__date">
+                                            <time class="published" datetime="2004-07-24T18:18">
+                                                {{  x.dateAvis | date}}
+                                            </time>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>{{  x.contenu }}
+                                <td>
+                                    {% for i in 1.. x.valeur %}
+                                        <span class="fa fa-star checked"></span>
+                                    {% endfor %}
+                                </td></p>
+                                {% if app.user.id == x.user.id %}
+                                    <td><a href="{{ path('delete_avis',{'id': x.id,'ide' :evenement.id }) }}" class="btn btn-danger">Supprimer</a></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    </ul>
+                    {{ form_start(form,{'attr':{'class':'comment-form inline-items'}}) }}
+                    <div class="post__author author vcard inline-items">
+                        <img src="{{ app.user.image }}" alt="author">
+
+                        <div class="form-group with-icon-right ">
+                            {{ form_widget(form.contenu,{'label':'contenu','attr':{'class':'form-control'}}) }}
+                            {{ form_widget(form.valeur,{'label':'valeur'}) }}
+                            <div class="add-options-message">
+                                <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
+                                    <svg class="olymp-camera-icon"><use xlink:href="icons/icons.svg#olymp-camera-icon"></use></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_widget(form.Commenter,{'label':'Commenter','attr':{'class':'form-control'}}) }}
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+

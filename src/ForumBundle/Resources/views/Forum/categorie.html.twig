@@ -1,0 +1,222 @@
+{% extends 'front.html.twig' %}
+
+{% block content %}
+
+
+    <div class="container">
+
+    <!-- Test -->
+    <div class="container">
+        <div class="row">
+            <div  class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-20">
+                <div class="ui-block responsive-flex">
+                    <div class="ui-block-title">
+                        <div class="h6 title">James’s Blog Posts</div>
+                        <div class="w-select">
+                            <div class="title">Order By:</div>
+
+                            <fieldset class="form-group">
+                                <select id="select_path" class="selectpicker form-control" size="auto">
+                                    <option value="">Selecter</option>
+                                    <option value="{{ path('forum_par_ordre_DESC') }}">Date (descendant)</option>
+                                    <option value="{{ path('forum_par_ordre_ASC') }}">Date (ascendant) </option>
+                                    <option value="{{ path('forum_par_al') }}">alphabetiquement</option>
+                                </select>
+                            </fieldset>
+
+                        </div>
+
+
+                            <div class="form-group with-button">
+                                <form >
+                                <input id="recherche" name="categorie"  class="form-control" type="text" placeholder="Search the forums..." >
+                                </form>
+                                <button>
+                                    <svg class="olymp-magnifying-glass-icon"><use xlink:href="{{ asset('icons/icons.svg#olymp-magnifying-glass-icon') }}"></use></svg>
+                                </button>
+                            </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    <!-- Test -->
+
+    <div style="width: 111.5%" class="row">
+    <div class="col-xl-8 col-lg-18 col-md-12 col-sm-12 col-xs-12">
+
+        <div class="ui-block">
+
+            <table class="forums-table" id="tableau">
+
+                <thead>
+
+                <tr>
+
+                    <th class="forum">
+                        Categories
+                    </th>
+
+                    <th class="topics">
+                        Nombre des sujets
+                    </th>
+
+                    <th class="posts">
+                        Posts
+
+
+                    </th>
+
+                    <th class="freshness">
+                        Date de partage
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+                <!--foreach-->
+                {% for voiture in voitures  %}
+                    {% set count = 0 %}
+                    <tr>
+                        <td class="forum">
+                            <div class="forum-item">
+                                <img style="width: 2cm;height: 2cm" src="{{ asset('imageproduit/' ~ voiture.image) }}" alt="forum">
+
+
+                                <div class="content">
+                                    <a class="h6 title" href="{{ path('forum_post_read',{'id':voiture.id}) }}">{{  voiture.libelle}}</a>
+
+                                    <p class="text">{{  voiture.description}}</p>
+
+                                        </a>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="topics">
+                            <a href="#" class="h6 count">
+                                {{ voiture.post.count }}
+                            </a>
+                        </td>
+                        <td class="posts">
+                            <a href="#" class="h6 count">
+                                {% for post in voiture  %}
+                                    {post.commentaires.count}
+
+                                {% endfor %}{{ count }}</a>
+                        </td>
+                        <td class="freshness">
+                            <div class="author-freshness">
+                                <div class="author-thumb">
+
+                                </div>
+                                <a href="#" class="h6 title"></a>
+                                <time class="entry-date updated" datetime="2017-06-24T18:18">{{ voiture.dateajout|date }}</time>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- end foreach-->
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        {{ knp_pagination_render(voitures) }}
+        <div class="fb-like" data-href="https://www.facebook.com/My_SoulMate-1996754973672446/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+
+        <div class="navigation">
+
+        </div>
+
+    </div>
+
+    <!-- Partie Recent post + featured topic -->
+    <div class="col-xl- col-lg-3 col-md-12 col-sm-12 col-xs-12">
+        <div class="ui-block">
+            <div class="ui-block-title">
+                <h6 class="title">Categorie Recent !</h6>
+            </div>
+
+            <div class="ui-block-content">
+                <ul class="widget w-featured-topics">
+                    {% for modele in recent %}
+                        <li>
+                            <i class="icon fa fa-star" aria-hidden="true"></i>
+                            <div class="content">
+                                <a href="{{ path('forum_post_read',{'id':modele.id}) }}" class="h6 title"> {{modele.libelle}} </a>
+                                <time class="entry-date updated" datetime="2017-06-24T18:18">{{modele.dateajout|date}}</time>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="ui-block">
+            <div class="ui-block-title">
+                <h6 class="title">Categorie les plus utilisé</h6>
+            </div>
+
+            <div class="ui-block-content">
+                <ul class="widget w-featured-topics">
+                    {% for plus in plus  %}
+                        <li>
+                            <i class="icon fa fa-star" aria-hidden="true"></i>
+                            <div class="content">
+                                <a href="{{ path('forum_post_read',{'id':plus.id}) }}" class="h6 title"> {{plus.libelle}} </a>
+                                <time class="entry-date updated" datetime="2017-06-24T18:18">{{plus.dateajout|date}}</time>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script><script >
+    $(function () {
+        $("#recherche").keyup(function () {
+            $.ajax({
+
+                url : "{{ path('forum') }}",
+                data : { 'categorie':$(this).val() }
+            }).done(function (response) {
+
+                var tableau = $(response).find(".forums-table");
+                $('#tableau').empty();
+                $('#tableau').append(tableau);
+            });
+        });
+    })
+</script>
+    <script>
+        $(document).ready(function(){
+            $("#select_path").change(function(){
+                if($(this).val()!="") {
+
+                    location.href = $(this).val();
+                }
+            });
+        });
+
+    </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.12';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+{% endblock %}
+

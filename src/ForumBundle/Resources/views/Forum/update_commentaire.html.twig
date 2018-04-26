@@ -1,0 +1,43 @@
+
+
+
+
+{% extends 'front.html.twig' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 push-xl-3 col-lg-9 push-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <div class="ui-block">
+                    <div class="ui-block-title">
+                        <h6 class="title">Modifier commentaire</h6>
+                    </div>
+                    <div class="ui-block-content">
+                        <form method="POST">
+                            <div class="row">
+                                <div class="post__author author vcard inline-items">
+                                    <img src="{{ asset('img/avatar10-sm.jpg') }}" alt="author">
+
+                                    <div class="author-date">
+                                        <a class="h6 post__author-name fn" href="#">Elaine Dreyfuss</a>
+                                        <div class="post__date">
+                                            <time class="published" datetime="2017-03-24T18:18">
+                                                5 mins ago
+                                            </time>
+
+                                            <input  type="text" name="contenu" value="{{ modele.contenu }}">
+                                            <br>
+                                            <input type="submit" value="Enregistrer" class="btn btn-primary btn-lg full-width">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

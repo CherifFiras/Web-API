@@ -1,0 +1,127 @@
+{% extends 'back.html.twig' %}
+
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/semantic.min.css') }}">
+
+<!--------------------------------------------------------------------------------------------------------------------->
+    <div class="example">
+        <h4 class="ui header">Nombre d'utilisateurs</h4><a class="anchor" id="statistic-group"></a>
+        <div class="ui statistics">
+            <div class="statistic">
+                <div class="value">
+                    {{ nb_users }}
+                </div>
+                <div class="label">
+                    Total
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    {{ nb_actif }}
+                </div>
+                <div class="label">
+                    Actifs
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    {{ nb_inactif }}
+                </div>
+                <div class="label">
+                    Inactifs
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="m-portlet m-portlet--tab">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                Ouverture sur d'autre réseaux sociaux
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div id="res_soc" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="m-portlet m-portlet--tab">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                Utilisateurs par activité
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div id="user_actif" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+    <script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/semantic.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/loader.js') }}"></script>
+    <script>
+
+        $(document).ready(function () {
+            $(".m-subheader__title").text("Statistique - Générale");
+
+            google.charts.load('current', {packages:['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var oldData = google.visualization.arrayToDataTable([
+                    ['Reseau', 'Nombre d"utilisateurs'],
+                    ['Facebook', {{ nb_fb }}],
+                    ['Twitter', {{ nb_twi }}],
+                    ['Instagram', {{ nb_inst }}]
+                ]);
+
+                var colChartBefore = new google.visualization.ColumnChart(document.getElementById('res_soc'));
+                console.log(colChartBefore);
+                var options = { legend: { position: 'top' } };
+
+                colChartBefore.draw(oldData, options);
+            }
+
+
+
+        });
+        //--------------
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // Define the chart to be drawn.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Element');
+            data.addColumn('number', 'Percentage');
+            data.addRows([
+                ['Actifs', {{ actif }}],
+                ['Inactifs', {{ inactif }}],
+            ]);
+
+            var options = { colors:['#3366cc','red'] };
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.PieChart(document.getElementById('user_actif'));
+            chart.draw(data, options);
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,20 @@
+readclient_evenement:
+    path:     /
+    defaults: { _controller: EvenementBundle:Client:ReadE }
+
+readmoreclient_evenement:
+    path:     /readmoreclient{id}
+    defaults: { _controller: EvenementBundle:Client:ReadMoreEC }
+
+
+
+delete_avis:
+    path:     /deleteavis/{id}/{ide}
+    defaults: { _controller: EvenementBundle:Client:DeleteAvis }
+
+
+
+participation:
+    path:     /participation/{id}
+    defaults: { _controller: EvenementBundle:Client:Participation }
+

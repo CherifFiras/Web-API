@@ -1,0 +1,210 @@
+{% extends 'front.html.twig' %}
+
+{% block content %}
+
+    {% for post in voitures1 %}
+<body  background="{{ asset('imageproduit/' ~ post.image)  }} ">
+    {% endfor %}
+    <script>
+        var currentdate = new Date();
+        function dateDiff(date1){
+            var date = new Date(date1);
+            var diff = {}                           // Initialisation du retour
+            var tmp = currentdate - date;
+            tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+            diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+
+            tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+            diff.min = tmp % 60;                    // Extraction du nombre de minutes
+
+            tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+            diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+
+            tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+            diff.day = tmp;
+
+            return diff;
+        }
+
+
+    </script>
+
+
+
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin: 80px">
+        <div class="ui-block">
+            <article class="hentry post">
+
+                <div class="post__author author vcard inline-items">
+                    {% for post in voitures1 %}
+                        <img  src="{{ asset('imageproduit/' ~ post.image) }}"  alt="author">
+
+                        <div style="width: 18cm" class="author-date">
+                            <a class="h6 post__author-name fn" href="02-ProfilePage.html">{{ post.User }}</a>
+                            <div class="post__date">
+                                <time id="{{ post.id }}" class="published" datetime="2017-03-24T18:18">
+
+                                </time>
+                                <script>
+
+                                    var y = dateDiff("{{ post.datePublication|date("Y/m/d") }}");
+                                    if(y.sec>0 && y.min<59)
+                                        document.getElementById("{{ post.id }}").innerText = y.day + " day ago";
+                                    else if(y.min>0 && y.hour<1)
+                                        document.getElementById("{{ post.id }}").innerText = y.day + " day ago";
+                                    else if(y.day>0)
+                                        document.getElementById("{{ post.id }}").innerText = y.day + " day ago";
+                                    else if(y.hour > 0)
+                                        document.getElementById("{{ post.id }}").innerText = y.hour + " hour ago";
+                                </script>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+
+                    <p>
+                        {% for x in voitures1 %}
+
+                    <h4>{{  x.contenu }} </h4>
+
+
+                    </p>
+                </div>
+                <div class="post-additional-info inline-items">
+
+                    {% if  jaime != NULL  %}
+
+                        <a style="color: red" href="{{ path('jaimepas',{'iduser':app.user.id ,'idsujet':x.id})  }}" class="post-add-icon inline-items" >
+                            <svg  class="olymp-heart-icon"><use xlink:href="{{ asset('icons/icons.svg#olymp-heart-icon') }}"></use></svg>
+                            je n'aime pas
+                        </a>
+
+
+                    {% else  %}
+
+
+                        <a style="color: #0a8cf0" href="{{ path('jaime',{'iduser':app.user.id , 'idsujet':x.id})  }}" class="post-add-icon inline-items">
+                            <svg  class="olymp-heart-icon"><use xlink:href="{{ asset('icons/icons.svg#olymp-heart-icon') }}"></use></svg>
+                            jaime
+                        </a>
+                    {% endif %}
+
+                    <a href="#" id="here" data-target="#create-friend-group-add-friends" data-toggle="modal"> {{ sum }}</a>
+
+                    <script>
+
+
+
+                    </script>
+
+                </div>
+                {% endfor %}
+
+
+
+                {% for voiture in voitures  %}
+                    <div class="post-additional-info inline-items">
+                        <div class="post__author author vcard inline-items">
+                            <img src="{{ voiture.User.image }}" alt="author">
+
+                            <div class="author-date">
+                                <a class="h6 post__author-name fn" href="#">{{ voiture.User }}</a>
+                                <div class="post__date">
+                                    <time id="{{ voiture.id }}" class="published" datetime="2017-03-24T18:18">
+                                    </time>
+                                    <script>
+                                        var x = dateDiff("{{ voiture.dateCommentaire|date("Y/m/d") }}");
+                                        if(x.day>0)
+                                            document.getElementById("{{ voiture.id }}").innerText = x.day + " day ago";
+                                        else if(x.hour > 0)
+                                            document.getElementById("{{ voiture.id }}").innerText = x.hour + " hour ago";
+                                    </script>
+                                </div>
+                            </div>
+
+                            {% if app.user.id == voiture.user.id %}
+                                <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('icons/icons.svg#olymp-three-dots-icon') }}"></use></svg>
+                                    <ul class="more-dropdown">
+                                        {% for x in voitures1 %}
+                                            <li>
+
+                                                <a href="{{ path('forum_update_commentaire',{'id':voiture.id,'ids':x.id,'iduser':app.user.id})  }}">Edit Post</a>
+                                            </li>
+                                            <li>
+
+                                                <a href="{{ path('forum_delete_commentaire',{'id':voiture.id,'ids':x.id,'iduser':app.user.id})  }}">Delete Post</a>
+
+                                            </li>
+
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <p>{{  voiture.contenu }}</p>
+
+                    </div>
+                {% endfor %}
+
+                <form method="POST" class="comment-form inline-items">
+
+                    <div class="post__author author vcard inline-items">
+                        <img src="{{ asset('images/') }}{{ app.user.image }}" alt="author">
+
+                        <div class="form-group with-icon-right ">
+
+                            <div class="add-options-message">
+                                <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
+                                    <svg class="olymp-camera-icon"><use xlink:href="icons/icons.svg#olymp-camera-icon"></use></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form.contenu, {'attr' : { 'class' : 'form-contro' }}) }}
+                    <a hidden> {{ form_widget(form.dateCommentaire) }}</a>
+                    {{ form_widget(form.save, {'attr' : { 'class' : 'btn btn-primary btn-lg full-width' }}) }}
+                    {{ form_end(form) }}
+                    <!--  <button type="submit" name="submit"  class="btn btn-md-2 btn-primary">Post Comment</button> -->
+
+
+
+                </form>
+            </article></div></div>
+
+    <!-- pop up -->
+    <div class="modal fade show" id="create-friend-group-add-friends" style=" padding-right: 17px;">
+        <div class="modal-dialog ui-block window-popup create-friend-group create-friend-group-add-friends">
+            <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+                <svg class="olymp-close-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+            </a>
+
+            <div class="ui-block-title">
+                <h6 class="title">Liste Des J'aimes</h6>
+            </div>
+
+            <div class="ui-block-content">
+                <form class="form-group label-floating is-select is-empty">
+                    {% for n in tout_les_jaimes %}
+                        <div class="author-thumb">
+                            <tr style="margin-left: auto"><h5><img style="height: 1cm ; width: 1cm" src="{{ asset('images/') }}{{ n.user.image }}" alt="author"> &nbsp;&nbsp;&nbsp; {{ n.user.username }}  </h5></tr>
+                        </div>
+                        <div class="h6 author-title"></div>
+                    {% endfor %}
+
+
+
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+</body>
+{% endblock %}
+

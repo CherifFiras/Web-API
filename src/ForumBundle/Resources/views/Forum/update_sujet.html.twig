@@ -1,0 +1,51 @@
+{% extends 'front.html.twig' %}
+
+{% block content %}
+{{ form_start(form) }}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 push-xl-3 col-lg-9 push-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="ui-block">
+                <div class="ui-block-title">
+                    <h6 class="title">Modifiez votre Informations</h6>
+                </div>
+                <div class="ui-block-content">
+                    <form>
+                        <div class="row">
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label">Titre :</label>
+                                <div class="form-group with-icon label-floating">
+
+                                    {{ form_widget(form.titre, {'attr' : { 'class' : 'form-control' }}) }}
+                                    <i class="fa fa-ticket c-twitter" aria-hidden="true"></i>
+                                </div>
+                                <label class="control-label">Contenu</label>
+                                <div class="form-group with-icon label-floating">
+
+                                    {{ form_widget(form.contenu, {'attr' : { 'class' : 'form-control' }}) }}
+
+                                </div>
+                                <label class="control-label">Date</label>
+                                <div class="form-group with-icon label-floating is-empty">
+
+                                    {{ form_widget(form.datePublication, {'attr' : { 'class' : 'form-control' }}) }}
+                                    <i class="fa fa-calendar c-twitter" aria-hidden="true"></i>
+                                </div>
+                                <label class="control-label">Image</label>
+                                <div class="form-group with-icon label-floating is-empty">
+
+                                    {{ form_widget(form.image, {'attr' : { 'class' : 'form-control' }}) }}
+                                    <i class="fa fa-dribbble c-dribbble" aria-hidden="true"></i>
+                                </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                {{ form_widget(form.save, {'attr' : { 'class' : 'btn btn-primary btn-lg full-width' }}) }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {{ form_end(form) }}
+{% endblock %}
+
