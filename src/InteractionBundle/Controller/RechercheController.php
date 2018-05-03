@@ -35,6 +35,17 @@ class RechercheController extends Controller
         return new JsonResponse($data);
     }
 
+    public function getUserByUsernameAction(Request $request)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $user = $manager->getRepository("MainBundle:User")->findBy(array("username" => $request->get("username")));
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setIgnoredAttributes(array('interets','acceptors','requesters','sendedDemandes','receivedDemandes'));
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($user, null);
+        return new JsonResponse($data);
+    }
+
     public function resultatAction(Request $request)
     {
 

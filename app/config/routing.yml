@@ -22,6 +22,11 @@ main:
     resource: "@MainBundle/Resources/config/routing.yml"
     prefix:   /
 
+
+username_user:
+    path:     /userbyusername
+    defaults: { _controller: InteractionBundle:Recherche:getUserByUsername }
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
