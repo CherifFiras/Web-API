@@ -161,4 +161,14 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->execute();
     }
 
+
+    public function find_user($email)
+    {
+        $q=$this->getEntityManager()
+            ->createQuery("select m from MainBundle:User m WHERE m.email=:id ")
+            ->setParameter(":id",$email);
+        return $q->getResult();
+    }
+
+
 }

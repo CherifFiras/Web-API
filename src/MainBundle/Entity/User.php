@@ -52,6 +52,29 @@ class User extends BaseUser implements NotifiableInterface
     protected $prenom;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="pass", type="string", length=255)
+     */
+    protected $pass;
+
+    /**
+     * @return string
+     */
+    public function getPass()
+    {
+        return $this->pass;
+    }
+
+    /**
+     * @param string $pass
+     */
+    public function setPass($pass)
+    {
+        $this->pass = $pass;
+    }
+
+    /**
      * @var Date
      *
      * @ORM\Column(name="date_naissance", type="date")
@@ -176,6 +199,7 @@ class User extends BaseUser implements NotifiableInterface
      * @ORM\Column(name="occupation", type="string" , length=255,nullable=true)
      */
     public $occupation;
+
 
     /**
      * @ORM\OneToMany(targetEntity="MainBundle\Entity\CentreInteret", mappedBy="user")

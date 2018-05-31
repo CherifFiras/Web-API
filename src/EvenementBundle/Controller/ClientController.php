@@ -15,8 +15,49 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+
 class ClientController extends Controller
 {
+    public function serviceAction()
+    {
+        $em= $this->getDoctrine()->getManager();
+        $evenement = $em->getRepository("MainBundle:Evenement")->findAll();
+        $normalizer = new ObjectNormalizer();
+        //$normalizer->setIgnoredAttributes(array('user'));
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $dataarray = array("cat"=>$evenement);
+        $data=$serializer->normalize($evenement, null, array('attributes' => array('id','imageEve','titre','nbplaces')));
+        return new JsonResponse($data);
+    }
+    public function service2Action($id)
+    {
+        $em= $this->getDoctrine()->getManager();
+        $evenement = $em->getRepository("MainBundle:Evenement")->find($id);
+        $normalizer = new ObjectNormalizer();
+        //$normalizer->setIgnoredAttributes(array('user'));
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $dataarray = array("cat"=>$evenement);
+        $data=$serializer->normalize($evenement, null, array('attributes' => array('id','description','titre','imageEve','dateEvenement','titreCordination','nbplaces')));
+        return new JsonResponse($data);
+    }
+
+    public function partAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $event=$em->getRepository("MainBundle:Evenement")->find($id);
+        var_dump($event);
+        $event->setNbplaces($event->getNbplaces() - "1");
+        $em->persist($event);
+        $em->flush();
+        $response = new Response();
+        $response->setContent("ok");
+        return $response;
+    }
+
+
     public function ReadEAction()
     {
         $em= $this->getDoctrine()->getManager();
@@ -96,11 +137,24 @@ class ClientController extends Controller
             $participation->setUser($user);
             $em->persist($participation);
             $em->flush();
-            return $this->redirectToRoute('readmoreclient_evenement', array('id' => $id));
+            return new JsonResponse("ok");
         }
         else {
-            return $this->redirectToRoute('readmoreclient_evenement', array('id' => $id));
+            return new JsonResponse("no");
         }
+    }
+
+    public function checkParticipationAction(Request $request)
+    {
+        $em= $this->getDoctrine()->getManager();
+        $id = $request->get("ide");
+        $evenement=$em->getRepository("MainBundle:Evenement")->find($id);
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $participTest = $this->getDoctrine()->getRepository("MainBundle:Participation")->findP($evenement,$user);
+        if($participTest == null)
+            return new JsonResponse("OK");
+        else
+            return new JsonResponse("NO");
     }
 
 }

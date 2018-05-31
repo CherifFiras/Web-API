@@ -18,3 +18,19 @@ participation:
     path:     /participation/{id}
     defaults: { _controller: EvenementBundle:Client:Participation }
 
+eve_mobile:
+    path:     /mobile/getall
+    defaults: { _controller: EvenementBundle:Client:service }
+
+mobilee:
+    path:     /mobile/getev/{id}
+    defaults: { _controller: EvenementBundle:Client:service2 }
+
+mobileee:
+    path:     /mobile/getp/{id}
+    defaults: { _controller: EvenementBundle:Client:part }
+
+checkp:
+    path:     /mobile/checkparticipation
+    defaults: { _controller: EvenementBundle:Client:checkParticipation }
+

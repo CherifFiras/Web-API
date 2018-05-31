@@ -71,7 +71,7 @@
 
                                 <div class="content">
                                     <a href="{{ path('forum_commentaire',{'id':voiture.id,'iduser':app.user.id}) }}" class="h6 title">{{  voiture.titre }}</a>
-                                    <p class="text">{{  voiture.contenu }}</p>
+                                    <p class="text">{{  voiture.contenu |  raw }}</p>
                                     {% if app.user.id == voiture.user.id %}
                                    <a  href="{{ path('forum_delete',{'ids':voiture.id, 'id':id}) }}"> <img  style="height: 0.5cm;width: 0.5cm" src="https://t3.ftcdn.net/jpg/01/45/20/26/500_F_145202679_oT6Hqu8j7PxkTdxIeQ82UuXKs113uuyZ.jpg">
                                        <a href="{{ path('forum_post_update',{'ids':voiture.id, 'id':id}) }}"> <img style="height: 0.5cm;width: 0.5cm" src="http://www.iconarchive.com/download/i60504/custom-icon-design/pretty-office-9/edit-validated.ico">

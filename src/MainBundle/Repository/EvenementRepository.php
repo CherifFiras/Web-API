@@ -22,4 +22,5 @@ class EvenementRepository extends \Doctrine\ORM\EntityRepository
             ->createQuery(" select d from MainBundle:Evenement d ORDER BY d.dateEvenement ");
         return $query->getResult();
     }
+
 }

@@ -2,10 +2,13 @@
 
 namespace ForumBundle\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use MainBundle\Entity\Categorie;
 use MainBundle\Entity\Post;
+use MainBundle\Entity\User;
 use ForumBundle\Form\PostType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -137,6 +140,26 @@ class PostController extends Controller
         ));
 
     }
+
+
+    public function createMobileAction($idc,$idu,$titre,$description)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $u=$em->getRepository(User::class)->find($idu);
+        $c=$em->getRepository(Categorie::class)->find($idc);
+        $voiture = new Post();
+        $voiture->setImage("5a8cf7d3bc16d.jpg");
+$voiture->setCategorie($c);
+$voiture->setUser($u);
+$voiture->setTitre($titre);
+        $voiture->setContenu($description);
+            $em->persist($voiture);
+            $em->flush();
+
+        return new JsonResponse("OK");
+    }
+
 
 
 }

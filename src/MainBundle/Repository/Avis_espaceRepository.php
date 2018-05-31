@@ -17,4 +17,20 @@ class Avis_espaceRepository extends \Doctrine\ORM\EntityRepository
 
         return $q->getResult();
     }
+    public  function  check($iduser,$idesp)
+    {
+        $q=$this->getEntityManager()
+            ->createQuery("select count(c.id)  from MainBundle:Avis_espace c WHERE c.espace=:ide and c.user=:idu")
+            ->setParameter(":ide",$idesp)
+            ->setParameter(":idu",$iduser);
+
+        return $q->getResult();
+    }
+    public function findrat($id){
+        $q=$this->getEntityManager()
+            ->createQuery("select AVG(c.rating) from MainBundle:Avis_espace c WHERE c.espace=:ide")
+            ->setParameter(":ide",$id);
+
+        return $q->getResult();
+    }
 }

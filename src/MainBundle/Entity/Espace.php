@@ -60,17 +60,17 @@ class Espace
      */
     private $etat;
     /**
-     * @var integer
+     * @var float
      *
-     * @ORM\Column(name="nbrating", type="integer")
+     * @ORM\Column(name="longi", type="float")
      */
-    private $nbrating;
+    private $longi;
     /**
-     * @var integer
+     * @var float
      *
-     * @ORM\Column(name="rating", type="integer")
+     * @ORM\Column(name="lat", type="float")
      */
-    private $rating;
+    private $lat;
     /**
      * @ORM\ManyToOne(targetEntity="MainBundle\Entity\User",cascade={"persist"})
      * @ORM\JoinColumn(name="IdUser",referencedColumnName="id")
@@ -157,19 +157,8 @@ class Espace
         return $this->titre;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Espace
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
 
-        return $this;
-    }
+
 
     /**
      * Get description
@@ -180,8 +169,64 @@ class Espace
     {
         return $this->description;
     }
+    /**
+     * Set longi
+     *
+     * @param float $longi
+     *
+     * @return Espace
+     */
+    public function setLongi($longi)
+    {
+        $this->longi = $longi;
 
+        return $this;
+    }
+    /**
+     * Set description
+     *
+     * @param String $description
+     *
+     * @return Espace
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
+        return $this;
+    }
+    /**
+     * Get longi
+     *
+     * @return float
+     */
+    public function getLongi()
+    {
+        return $this->longi;
+    }
+    /**
+     * Set lat
+     *
+     * @param float $lat
+     *
+     * @return Espace
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return float
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
     /**
      * Set adresse
      *
@@ -319,53 +364,6 @@ class Espace
 
 
     /**
-     * Set rating
-     *
-     * @param integer $rating
-     *
-     * @return Espace
-     */
-    public function setRating($rating)
-    {
-        $this->rating = $rating;
-
-        return $this;
-    }
-
-    /**
-     * Get rating
-     *
-     * @return integer
-     */
-    public function getRating()
-    {
-        return $this->rating;
-    }
-
-    /**
-     * Set nbrating
-     *
-     * @param integer $nbrating
-     *
-     * @return Espace
-     */
-    public function setNbrating($nbrating)
-    {
-        $this->nbrating = $nbrating;
-
-        return $this;
-    }
-
-    /**
-     * Get nbrating
-     *
-     * @return integer
-     */
-    public function getNbrating()
-    {
-        return $this->nbrating;
-    }
-    /**
      * Constructor
      */
     public function __construct()
@@ -445,5 +443,39 @@ class Espace
     public function removePhotoEspace(\MainBundle\Entity\Photo_espace $photoEspace)
     {
         $this->Photo_espace->removeElement($photoEspace);
+    }
+
+    /**
+     * Add avisEspace
+     *
+     * @param \MainBundle\Entity\Avis_espace $avisEspace
+     *
+     * @return Espace
+     */
+    public function addAvisEspace(\MainBundle\Entity\Avis_espace $avisEspace)
+    {
+        $this->Avis_espace[] = $avisEspace;
+
+        return $this;
+    }
+
+    /**
+     * Remove avisEspace
+     *
+     * @param \MainBundle\Entity\Avis_espace $avisEspace
+     */
+    public function removeAvisEspace(\MainBundle\Entity\Avis_espace $avisEspace)
+    {
+        $this->Avis_espace->removeElement($avisEspace);
+    }
+
+    /**
+     * Get avisEspace
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAvisEspace()
+    {
+        return $this->Avis_espace;
     }
 }

@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Commentaire_forum
 {
+
+
     /**
      * @var int
      *
@@ -42,6 +44,7 @@ class Commentaire_forum
     public function __construct()
     {
         $this->post = new ArrayCollection();
+        $this->dateCommentaire = new \DateTime();
     }
 
 

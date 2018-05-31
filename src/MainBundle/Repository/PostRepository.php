@@ -18,6 +18,13 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
         return $q->getResult();
     }
 
+    public function findByIdCategorie1($id){
+        $q=$this->getEntityManager()
+            ->createQuery("select m from MainBundle:Post m WHERE m.categorie=:id ORDER BY m.id DESC")
+            ->setParameter(":id",$id);
+        return $q->getResult();
+    }
+
     public function findPost($id){
         $q=$this->getEntityManager()
             ->createQuery("select m from MainBundle:Post m WHERE m.id=:id ")

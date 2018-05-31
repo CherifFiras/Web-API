@@ -60,7 +60,35 @@ forum_delete_commentaire:
     path:     /forum/post/commentaire/delete/{id}/{ids}/{iduser}
     defaults: { _controller: ForumBundle:Commentaire:delete }
 
+forum_service:
+    path:     /forum/getall
+    defaults: { _controller: ForumBundle:Categorie:service }
 
+list_sujet:
+    path:     /forum/getall/{idc}
+    defaults: { _controller: ForumBundle:Categorie:service2 }
+
+ajouter_user:
+    path:     /ajouter_user/{firstname}/{password}
+    defaults: { _controller: ForumBundle:Categorie:service1 }
+
+calc:
+    path:     /forum/mobile_calcule/{ids}
+    defaults: { _controller: ForumBundle:Categorie:mobile_calcule }
+
+
+forgot_password:
+    path:     /user/forgot/{email}
+    defaults: { _controller: ForumBundle:Categorie:forgot }
+
+
+commentaire_mobile:
+        path:     /commentaire/{ids}
+        defaults: { _controller: ForumBundle:Categorie:commentaire_mobile }
+
+ajouter_commentaire_mobile:
+        path:     /ajouter_commentaire/{idu}/{ids}/{cont}
+        defaults: { _controller: ForumBundle:Categorie:ajouter_commentaire}
 
 #Fonction
 
@@ -75,8 +103,12 @@ jaimepas:
 
 
 
+ajouter_sujet_mobile:
+    path:     /forum/ajouter_mobile/{idc}/{idu}/{titre}/{description}
+    defaults: { _controller: ForumBundle:Post:createMobile }
 
 
 
-
-
+tri:
+    path:     /forum/tri/{idc}
+    defaults: { _controller: ForumBundle:Categorie:service3 }

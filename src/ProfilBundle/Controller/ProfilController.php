@@ -16,6 +16,10 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProfilController extends Controller
 {
@@ -445,5 +449,341 @@ class ProfilController extends Controller
         return $this->render('ProfilBundle:Default:autreAlbum.html.twig', array(
             'autreUser' => $u[0],'photos'=>$photos
         ));
+    }
+    //----------------------------------MOBILE SERVICES--------------
+    public function getPublicationsAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        if (in_array("ROLE_SUPER_ADMIN", $u->getRoles())) {
+            return $this->redirectToRoute("admin");
+        }
+        //------
+        $em = $this->getDoctrine()->getManager();
+        $pubs = $em->getRepository(Publication::class)->findBy(array('user' => $u->getId()),array('datePublication' => 'DESC'));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($pubs, null, array('attributes' => array('id','datePublication','contenu','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getCentresAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        //------
+        $em = $this->getDoctrine()->getManager();
+
+        $films = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u->getId(),'type' => 'film'));
+        $series = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u->getId(),'type' => 'serie'));
+        $artists = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u->getId(),'type' => 'artist'));
+        $livres = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u->getId(),'type' => 'livre')); 
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        //$data=$serializer->normalize($films, null, array('attributes' => array('id','type','contenu','user'=>['id','nom','prenom','image'])));
+        //$data2=$serializer->normalize($series, null, array('attributes2' => array('id','type','contenu','user'=>['id','nom','prenom','image'])));
+        //$data3=$serializer->normalize($artists, null, array('attributes2' => array('id','type','contenu','user'=>['id','nom','prenom','image'])));
+        //$data4=$serializer->normalize($livres, null, array('attributes2' => array('id','type','contenu','user'=>['id','nom','prenom','image'])));
+        $arrayData = $arrayName = array('films' => $films, 'series'=>$series,'livres'=>$livres,'artists'=>$artists);
+        $data=$serializer->normalize($arrayData, null, array('attributes' => array('id','type','contenu','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getLoisirsAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        //------
+        $em = $this->getDoctrine()->getManager();
+        $loisirs = $em->getRepository(Loisir::class)->findBy(array('user' => $u->getId()));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($loisirs, null, array('attributes' => array('id','contenu','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getEmploisAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        //------
+        $em = $this->getDoctrine()->getManager();
+        $emplois = $em->getRepository(Emploi::class)->findBy(array('user' => $u->getId()),array('dateDebut' => 'ASC'));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($emplois, null, array('attributes' => array('id','contenu','dateDebut','dateFin','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getScolariteAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        //------
+        $em = $this->getDoctrine()->getManager();
+        $scolarite = $em->getRepository(Scolarite::class)->findBy(array('user' => $u->getId()),array('dateDebut' => 'ASC'));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($scolarite, null, array('attributes' => array('id','contenu','dateDebut','dateFin','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function ajouterPhotoAction(Request $request)
+    {
+        $u= $this->container->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $album = new Album();
+        $album->setUrl($request->get('image'));
+        $d = new \DateTime("now");
+        $album->setDatePublication($d);
+        $album->setUser($u);
+
+        $em->persist($album);
+        $em->flush();
+
+        return new JsonResponse("OK");
+    }
+    //---------------------------------------------------------------
+    public function getAlbumAction(Request $request)
+    {
+        $u= $this->container->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $photos=$em->getRepository(Album::class)->findBy(array('user' => $u->getId()),array('datePublication' => 'DESC'));
+
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($photos, null, array('attributes' => array('id','url','datePublication','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //------------------------
+    public function supprimerPhotoAction(Request $request)
+    {
+        $u= $this->container->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $album = $em->getRepository(Album::class)->find($request->get("idImg"));
+
+        $em->remove($album);
+        $em->flush();
+
+        return new JsonResponse("OK");
+    }
+    //---------------------------
+    public function modifierPublicationAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $p = $em->getRepository(Publication::class)->find($request->get("idpub"));
+        $p->setContenu(($request->get('newContenu')));
+        $d = new \DateTime("now");
+        $p->setDatePublication($d);
+        $em->persist($p);
+        $em->flush();
+        return new JsonResponse("OK");
+    }
+    //-----------------------------------
+    public function supprimerPublicationAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $p= $em->getRepository(Publication::class)->find($request->get("idpub"));
+        $em->remove($p);
+        $em->flush();
+        return new JsonResponse("OK");
+    }
+    //---------------------------------------
+    public function ajouterPublicationAction(Request $request)
+    {
+        $u= $this->container->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $p = new Publication();
+        $p->setContenu(($request->get('contenu')));
+        $d = new \DateTime("now");
+        $p->setDatePublication($d);
+        $p->setUser($u);
+        $em->persist($p);
+        $em->flush();
+        return new JsonResponse("OK");
+    }
+    //--------------------------------------
+    public function getSuggestionAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        //------
+        $em = $this->getDoctrine()->getManager();
+        $users_sug = $em->getRepository(User::class)->findSuggestionUsers("ROLE_SUPER_ADMIN",$u->getSalt(),$u->getId());
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($users_sug, null, array('attributes' => array('id','nom','prenom','dateNaissance','image')));
+        return new JsonResponse($data);
+    }
+    //--------------------------------------
+    public function getAutrePubsAction(Request $request)
+    {
+        $idu = $request->get('idautreuser');
+        $em = $this->getDoctrine()->getManager();
+        $u = $em->getRepository(User::class)->findBy(array('id' => $idu));
+        $pubs = $em->getRepository(Publication::class)->findBy(array('user' => $idu),array('datePublication' => 'DESC'));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($pubs, null, array('attributes' => array('id','datePublication','contenu','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //--------------------------------------
+    public function getAutreUserAction(Request $request)
+    {
+        $idu = $request->get('idautreuser');
+        $em = $this->getDoctrine()->getManager();
+        $u = $em->getRepository(User::class)->findBy(array('id' => $idu));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setIgnoredAttributes(array('interets','acceptors','requesters','sendedDemandes','receivedDemandes'));
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($u, null);
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getAutreCentresAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->get('idautreuser');
+        $u = $em->getRepository(User::class)->findBy(array('id' => $id));
+        //------        
+        $films = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u[0]->getId(),'type' => 'film'));
+        $series = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u[0]->getId(),'type' => 'serie'));
+        $artists = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u[0]->getId(),'type' => 'artist'));
+        $livres = $em->getRepository(CentreInteret::class)->findBy(array('user' => $u[0]->getId(),'type' => 'livre'));        
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));        
+        $arrayData = $arrayName = array('films' => $films, 'series'=>$series,'livres'=>$livres,'artists'=>$artists);
+        $data=$serializer->normalize($arrayData, null, array('attributes' => array('id','type','contenu','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+        //---------------------------------------------------------------
+    public function getAutreLoisirsAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->get('idautreuser');
+        $u = $em->getRepository(User::class)->findBy(array('id' => $id));
+        //------        
+        $loisirs = $em->getRepository(Loisir::class)->findBy(array('user' => $u[0]->getId()));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($loisirs, null, array('attributes' => array('id','contenu','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getAutreEmploisAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->get('idautreuser');
+        $u = $em->getRepository(User::class)->findBy(array('id' => $id));
+        //------        
+        $emplois = $em->getRepository(Emploi::class)->findBy(array('user' => $u[0]->getId()),array('dateDebut' => 'ASC'));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($emplois, null, array('attributes' => array('id','contenu','dateDebut','dateFin','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getAutreScolariteAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->get('idautreuser');
+        $u = $em->getRepository(User::class)->findBy(array('id' => $id));
+        //------        
+        $scolarite = $em->getRepository(Scolarite::class)->findBy(array('user' => $u[0]->getId()),array('dateDebut' => 'ASC'));
+        //------------------------------
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($scolarite, null, array('attributes' => array('id','contenu','dateDebut','dateFin','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //---------------------------------------------------------------
+    public function getAutreAlbumAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->get('idautreuser');
+        $u = $em->getRepository(User::class)->findBy(array('id' => $id));
+        
+        $photos=$em->getRepository(Album::class)->findBy(array('user' => $u[0]->getId()),array('datePublication' => 'DESC'));
+
+        $normalizer = new ObjectNormalizer();
+        $serializer=new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($photos, null, array('attributes' => array('id','url','datePublication','user'=>['id','nom','prenom','image'])));
+        return new JsonResponse($data);
+    }
+    //--------------------------------------------
+    public function signalerAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->get('idautreuser');
+        $contenu = $request->get('contenu');
+
+        $user_signal = new Signaler();
+        $user_signal->setCause($contenu);
+        $user_signal->setIdUser($id);
+        $em->persist($user_signal);
+        $em->flush();
+
+        return new JsonResponse("OK");
+    }
+    //---------------------------
+    public function modifierUserPhotoAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $u;
+        $em = $this->getDoctrine()->getManager();
+        $user->setImage($request->get('imageurl'));
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse("OK");
+    }
+    //---------------------------
+    public function modifierUserAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $u;
+        $em = $this->getDoctrine()->getManager();
+
+        $user->setNom($request->get('nom'));
+        $user->setPrenom($request->get('prenom'));
+        $user->setGenre($request->get('sexe'));
+        $d = new \DateTime($request->get('datenaiss'));
+        $user->setDateNaissance($d);
+        //$user->setPays($request->get('pays'));
+        //$user->setVille($request->get('ville'));
+        //$user->setRegion($request->get('region'));
+        $user->setTel($request->get('tel'));
+        $user->setPlaceNaiss($request->get('placenaiss'));
+        $user->setRelegion($request->get('religion'));
+        $user->setApropos($request->get('apropos'));
+        $user->setFacebook($request->get('facebook'));
+        $user->setTwitter($request->get('twitter'));
+        $user->setInstagram($request->get('instagram'));
+        $user->setOccupation($request->get('occ'));
+
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse("OK");
+    }
+    //------------------------------
+    public function modifierUserLocationAction(Request $request)
+    {
+        $u = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $u;
+        $em = $this->getDoctrine()->getManager();
+        $user->setSalt($request->get('location'));
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse("OK");        
     }
 }

@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Post
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
+
+
     /**
      * @var int
      *
@@ -56,6 +59,14 @@ class Post
      * @ORM\Column(name="image", type="text")
      */
     private $image;
+
+    /**
+     * Post constructor.
+     */
+    public function __construct()
+    {
+        $this->datePublication = new \DateTime();
+    }
 
     /**
      * @return string

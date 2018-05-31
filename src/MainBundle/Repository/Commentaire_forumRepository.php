@@ -18,4 +18,21 @@ class Commentaire_forumRepository extends \Doctrine\ORM\EntityRepository
         return $q->getResult();
     }
 
+
+
+    public function calc($ids){
+        $q=$this->getEntityManager()
+            ->createQuery("select m from MainBundle:Commentaire_forum m WHERE m.post=:id ")
+            ->setParameter(":id",$ids);
+        return $q->getResult();
+    }
+
+
+
+    public function findbyidsujet($ids){
+        $q=$this->getEntityManager()
+            ->createQuery("select m from MainBundle:Commentaire_forum m WHERE m.post=:id ")
+            ->setParameter(":id",$ids);
+        return $q->getResult();
+    }
 }

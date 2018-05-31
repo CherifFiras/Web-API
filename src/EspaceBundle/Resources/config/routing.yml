@@ -8,9 +8,14 @@ modifier_espace_client:
     defaults: { _controller: EspaceBundle:Espace:modifierespace}
 
 ajouter_espace_client:
-    path:     /client/ajouter_espace
+    path:     /client/ajouter_espace/{titre}/{description}/{iduser}/{adresse}
+
     defaults: { _controller: EspaceBundle:Espace:create }
 
+ajouter_espace_check:
+    path:     /client/check/{iduser}/{idesp}
+
+    defaults: { _controller: EspaceBundle:Espace:check}
 ajouter_album_client:
     path:     /client/album/{id}
     defaults: { _controller: EspaceBundle:Espace:album }
@@ -28,14 +33,19 @@ info_espace:
        defaults: { _controller: EspaceBundle:Espace:infoespace }
 
 ajouter_commentaire:
-       path:   /client/info_espace/commentaire/{id}
+       path:   /client/info_espace/commentaire/{id}/{idus}/{contenu}
        defaults: { _controller: EspaceBundle:Espace:ajouter_commentaire }
 
 supprimer_commentaire:
-      path:  /client/info_espace/supprimer_com/{id}/{espace}
+      path:  /client/info_espace/supprimer_com/{id}
       defaults: { _controller: EspaceBundle:Espace:supprimer_commentaire}
 
 modifier_espaceparclient:
      path:  /client/offre_espace/modifier{id_esp}
      defaults: { _controller: EspaceBundle:Espace:modifierparclient}
-
+rating_espace:
+   path:   /client/offre_espace/rating/{id}
+   defaults: { _controller: EspaceBundle:Espace:rating}
+ajout_rating:
+  path:   /client/offre_espace/ajout_rat/{idesp}/{ratingg}/{iduser}
+  defaults: { _controller: EspaceBundle:Espace:ajout_rating}

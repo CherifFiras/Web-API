@@ -45,3 +45,95 @@ autre_profil_apropos:
 autre_profil_album:
     path:     /{id}/album
     defaults: { _controller: ProfilBundle:Profil:autreAlbum }
+
+mobile_get_pubs:
+    path:     /mobile/publications
+    defaults: { _controller: ProfilBundle:Profil:getPublications }
+
+mobile_get_centres:
+    path:     /mobile/centres
+    defaults: { _controller: ProfilBundle:Profil:getCentres }
+
+mobile_get_loisirs:
+    path:     /mobile/loisirs
+    defaults: { _controller: ProfilBundle:Profil:getLoisirs }
+
+mobile_get_emplois:
+    path:     /mobile/emplois
+    defaults: { _controller: ProfilBundle:Profil:getEmplois }
+
+mobile_get_scolarite:
+    path:     /mobile/scolarite
+    defaults: { _controller: ProfilBundle:Profil:getScolarite }
+
+mobile_add_albumphoto:
+    path:     /mobile/addalbumphoto
+    defaults: { _controller: ProfilBundle:Profil:ajouterPhoto }
+
+mobile_get_albumphoto:
+    path:     /mobile/getalbum
+    defaults: { _controller: ProfilBundle:Profil:getAlbum }
+
+mobile_delete_albumphoto:
+    path:     /mobile/supprimeralbum
+    defaults: { _controller: ProfilBundle:Profil:supprimerPhoto }
+
+mobile_modifier_pub:
+    path:     /mobile/modifierpublication
+    defaults: { _controller: ProfilBundle:Profil:modifierPublication }
+
+mobile_delete_pub:
+    path:     /mobile/supprimerpublication
+    defaults: { _controller: ProfilBundle:Profil:supprimerPublication }
+
+mobile_add_pub:
+    path:     /mobile/ajouterpublication
+    defaults: { _controller: ProfilBundle:Profil:ajouterPublication }
+
+mobile_get_sug:
+    path:     /mobile/getsuggestion
+    defaults: { _controller: ProfilBundle:Profil:getSuggestion }
+
+mobile_get_autre_pub:
+    path:     /mobile/getautrepubs
+    defaults: { _controller: ProfilBundle:Profil:getAutrePubs }
+
+mobile_get_autre_user:
+    path:     /mobile/getautreuser
+    defaults: { _controller: ProfilBundle:Profil:getAutreUser }
+
+mobile_get_autre_centre:
+    path:     /mobile/getautrecentres
+    defaults: { _controller: ProfilBundle:Profil:getAutreCentres }
+
+mobile_get_autre_loisir:
+    path:     /mobile/getautreloisirs
+    defaults: { _controller: ProfilBundle:Profil:getAutreLoisirs }
+
+mobile_get_autre_scolarite:
+    path:     /mobile/getautrescolarites
+    defaults: { _controller: ProfilBundle:Profil:getAutreScolarite }
+
+mobile_get_autre_emploi:
+    path:     /mobile/getautreemplois
+    defaults: { _controller: ProfilBundle:Profil:getAutreEmplois }
+
+mobile_get_autre_album:
+    path:     /mobile/getautrealbum
+    defaults: { _controller: ProfilBundle:Profil:getAutreAlbum }
+
+mobile_signaler:
+    path:     /mobile/signaler
+    defaults: { _controller: ProfilBundle:Profil:signaler }
+
+mobile_modifier_user_image:
+    path:     /mobile/modifieruserimage
+    defaults: { _controller: ProfilBundle:Profil:modifierUserPhoto }
+
+mobile_modifier_user:
+    path:     /mobile/modifieruser
+    defaults: { _controller: ProfilBundle:Profil:modifierUser }
+
+mobile_modifier_user_location:
+    path:     /mobile/modifieruserlocation
+    defaults: { _controller: ProfilBundle:Profil:modifierUserLocation }

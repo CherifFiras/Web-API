@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -72,16 +73,12 @@ class EspaceController extends Controller
         $em->flush();
         return $this->redirectToRoute("afficher_espace");
     }
-    public function supprimer_commentaireAction($id,$espace){
+    public function supprimer_commentaireAction($id){
         $em = $this->getDoctrine()->getManager();
         $commentaire=$em->getRepository("MainBundle:Commentaire_espace")->find($id);
-        $commen=$em->getRepository(Commentaire_espace::class)->findcom($espace);
-        $user= $this->container->get('security.token_storage')->getToken()->getUser();
-        $album=$em->getRepository('MainBundle:Photo_espace')->findalbum($espace);
-        $espaces=$em->getRepository('MainBundle:Espace')->find($espace);
         $em->remove($commentaire);
         $em->flush();
-        return $this->redirectToRoute("info_espace",array('id'=>$espace));
+        return $this->redirectToRoute("afficher_espace");
     }
     public function deleteconfAction($id)
     {
@@ -200,34 +197,45 @@ class EspaceController extends Controller
         }
         return $this->render("@Espace/Espace_admin/espace.html.twig");
     }
-    public function createAction(Request $request)
+    public function createAction(Request $request,$titre,$description,$iduser,$adresse)
     {
         $em=$this->getDoctrine()->getManager();
+        $user=$em->getRepository(User::class)->find($iduser);
+
         $espace= new Espace();
-        $user= $this->container->get('security.token_storage')->getToken()->getUser();
-        $form=$this->createFormBuilder($espace)
-            ->add('titre',TextType::class)
-            ->add('description',TextareaType::class)
-            ->add('adresse',TextType::class)
-            ->add('file',FileType::class)
-            ->add('Enregistrer',SubmitType::class)
-            ->getForm();
-        $form->handleRequest($request);
-        if (($form->isSubmitted())&&($form->isValid()))
-        {   $espace=$form->getData();
-            $espace->upload();
+
+
+
             $espace->setEtat("0");
-            $espace->setNBrating("0");
-            $espace->setRating("0");
+            $espace->setLat(33.888077);
+            $espace->setLongi(10.097522);
+            $espace->setTitre($titre);
+            $espace->setDescription($description);
+            $espace->setAdresse($adresse);
+            $espace->setPhoto("barry-allen-the-flash-logo-3.jpg");
             $espace->setUser($user);
             $em->persist($espace);
             $em->flush();
-            return $this->redirectToRoute("ajouter_album_client",array("id"=>$espace->getId()));
-        }
-        return $this->render('EspaceBundle:Espace_client:ajouter_espace_client.html.twig',array(
-                "form"=>$form->createView()
-            )
-        );
+        return $this->redirectToRoute("offre_espace");
+
+
+
+
+    }
+    public function checkAction($iduser,$idesp)
+    {
+        $em=$this->getDoctrine()->getManager();
+
+        $user=$em->getRepository("MainBundle:User")->find($iduser);
+
+        $espace=$em->getRepository("MainBundle:Espace")->find($idesp);
+        $rati = $em->getRepository("MainBundle:Avis_espace")->check($user->getId(),$espace->getId());
+
+            $serializer= new Serializer([new ObjectNormalizer()]);
+            $data=$serializer->normalize($rati);
+
+            return new JsonResponse($data);
+
 
 
 
@@ -262,28 +270,21 @@ class EspaceController extends Controller
 
 
     }
-    public function ajouter_commentaireAction(Request $request,$id)
+    public function ajouter_commentaireAction(Request $request,$id,$idus,$contenu)
     {
 
         $em=$this->getDoctrine()->getManager();
         $commentaire= new Commentaire_espace();
 
         $espaces=$em->getRepository(Espace::class)->find($id);
-        $commentaire1=$em->getRepository(Commentaire_espace::class)->findcom($id);
-        $user= $this->container->get('security.token_storage')->getToken()->getUser();
-       if($request->isMethod('post')){
-           $commentaire->setContenu($request->get('contenu'));
-           $commentaire->setUser($user);
+        $userr = $em->getRepository(User::class)->find($idus);
+           $commentaire->setContenu($contenu);
+           $commentaire->setUser($userr);
            $commentaire->setEspace($espaces);
             $commentaire->setDateCommentaire(new \DateTime('now +1hour'));
             $em->persist($commentaire);
             $em->flush();
-          return $this->redirectToRoute("info_espace",array("id"=>$id));
-        }
-            return $this->render('EspaceBundle:Espace_client:info_espace.html.twig', array(
-                "espaces"=>$espaces,"commentaire"=>$commentaire1
-
-            ));
+            return $this->redirectToRoute("offre_espace");
 
 
 
@@ -294,11 +295,9 @@ class EspaceController extends Controller
         $em= $this->getDoctrine()->getManager();
         $user=$this->container->get('security.token_storage')->getToken()->getUser();
         $espaces=$em->getRepository("MainBundle:Espace")->findetat();
-        $rating=$em->getRepository("MainBundle:Avis_espace")->findAll();
-        return $this->render('EspaceBundle:Espace_client:offre_espace.html.twig', array(
-            "espaces"=>$espaces,"user"=>$user,"rating"=>$rating,"rating1"=>$rating
-
-        ));
+        $serializer= new Serializer([new ObjectNormalizer()]);
+        $data=$serializer->normalize($espaces,null, array('attributes' => array('id','titre','description','adresse','photo','etat','longi','lat','email','sender'=>['id','titre','description','adresse','photo','etat','longi','lat','email'])));
+        return new JsonResponse($data);
 
     }
     public function infoespaceAction(Request $request,$id)
@@ -310,39 +309,42 @@ class EspaceController extends Controller
         $commentaire=$em->getRepository(Commentaire_espace::class)->findcom($id);
         $album=$em->getRepository("MainBundle:Photo_espace")->findalbum($id);
         $rating=$em->getRepository("MainBundle:Avis_espace")->findrati($id);
-        $avis=new Avis_espace();
-        $form=$this->createFormBuilder($avis)
-            ->add('rating',RatingType::class, [
-                //...
-                'stars' => 5,
-                //...
-            ])
-            ->add('add',SubmitType::class)
-        ->getForm();
-        $form->handleRequest($request);
-        if (($form->isSubmitted())&&($form->isValid()))
-        {
-            $avis=$form->getData();
-            $avis->setNbrating(1);
-            $avis->setUser($user);
-            $avis->setEspace($espaces);
-            $em->persist($avis);
-            $em->flush();
-            return $this->render('EspaceBundle:Espace_client:info_espace.html.twig', array(
-                "espaces"=>$espaces,"commentaire"=>$commentaire,"album"=>$album,"user"=>$user,"form"=>$form->createView(),"rati"=>$rating));
-        }
 
+        $array = array("commentaire"=>$commentaire,"espace"=>$espaces);
+        $normalizer = new ObjectNormalizer();
+        $serializer= new Serializer(array(new DateTimeNormalizer(),$normalizer));
+        $data=$serializer->normalize($array,null, array('attributes' => array('id','titre','description','adresse','photo','etat','longi','lat','contenu','dateCommentaire','user'=>['id','nom','prenom'])));
+        //$array=$serializer->normalize($commentaire,null, array('attributes' => array('id','contenu','dateCommentaire')));
 
-        return $this->render('EspaceBundle:Espace_client:info_espace.html.twig', array(
-            "espaces"=>$espaces,"commentaire"=>$commentaire,"album"=>$album,"user"=>$user,"form"=>$form->createView(),"rati"=>$rating
+        return new JsonResponse($data);
+    }
 
-        ));
+    public function ratingAction(Request $request,$id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $ratings=$em->getRepository("MainBundle:Avis_espace")->findrat($id);
+        $serializer= new Serializer([new ObjectNormalizer()]);
+        $data=$serializer->normalize($ratings);
+        return new JsonResponse($data);
 
     }
 
+    public function ajout_ratingAction(Request $request,$idesp,$ratingg,$iduser)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $rating = new Avis_espace();
+        $esp=$em->getRepository("MainBundle:Espace")->find($idesp);
 
+        $user=$em->getRepository("MainBundle:User")->find($iduser);
+        $rating->setEspace($esp);
+        $rating->setUser($user);
+        $rating->setNbrating(1);
+        $rating->setRating($ratingg);
+        $em->persist($rating);
+        $em->flush();
+        return $this->redirectToRoute("offre_espace");
 
-
+    }
 
     public function ajaxSnippetImageSendAction(Request $request)
     {
